@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# do not use nounset, some variables can not be set
+set -o errexit -o xtrace
+
+# exactly, "${1#-}" returns the first argument without the first character "-"
+# so this condition is true if first argument starts with "-" like "-f" or "--some-option"
+if [ "${1#-}" != "$1" ]; then
+    # "set --" redefines arguments passed to the script and prefixes them by "php-fpm"
+    set -- "$@"
+fi
+
+if ! command -v curl; then
+    apt-get update
+    apt-get install -y curl
+fi
+
+echo "Start Ollama server"
+/bin/ollama serve &
+until curl -s -o /dev/null -w "%{http_code}" http://localhost:11434 | grep -q "200"; do
+    echo "Wait for Ollama server: 1 second..."
+    sleep 1
+done
+
+echo "Create the model"
+/bin/ollama create main -f /code/Modelfile
+echo "Run the model"
+/bin/ollama run main

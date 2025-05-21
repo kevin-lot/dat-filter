@@ -1,0 +1,50 @@
+services:
+    ollama:
+        container_name: ollama
+        #    deploy:
+        #      resources:
+        #        reservations:
+        #          devices:
+        #            - driver: nvidia
+        #              count: all
+        #              capabilities: [gpu]
+        environment:
+            OLLAMA_KEEP_ALIVE: 24h
+        entrypoint: /code/.docker/ollama/entrypoint
+        image: docker.io/ollama/ollama:latest
+        networks:
+            - ollama-docker
+        ports:
+            - "11434:11434"
+        pull_policy: always
+        restart: unless-stopped
+        tty: true
+        volumes:
+            - .:/code
+            - ./.cache/ollama_data:/root/.ollama
+
+    ollama-webui:
+        container_name: ollama-webui
+        depends_on:
+            - ollama
+        environment: # https://docs.openwebui.com/getting-started/env-configuration#default_models
+            ENV: dev
+            OLLAMA_BASE_URLS: http://ollama:11434
+            WEBUI_AUTH: False
+            WEBUI_NAME: valiantlynx AI
+            WEBUI_SECRET_KEY: t0p-s3cr3t
+            WEBUI_URL: http://localhost:8080
+        image: ghcr.io/open-webui/open-webui:main
+        ports:
+            - "8080:8080"
+        extra_hosts:
+            - host.docker.internal:host-gateway
+        networks:
+            - ollama-docker
+        restart: unless-stopped
+        volumes:
+            - ./.cache/ollama_webui:/app/backend/data
+
+networks:
+    ollama-docker:
+        external: false

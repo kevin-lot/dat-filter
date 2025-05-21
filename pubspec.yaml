@@ -1,0 +1,10 @@
+name: dat_filter
+publish_to: none
+workspace:
+    - packages/app
+    - packages/dimension
+    - packages/infra
+    - packages/string
+
+environment:
+    sdk: '>=3.6.0 <5.0.0'

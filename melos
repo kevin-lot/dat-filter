@@ -1,0 +1,99 @@
+#!/bin/bash
+
+set -e # exit on first error
+
+WORKSPACES=(
+    "packages/app"
+    "packages/dimension"
+    "packages/infra"
+    "packages/string"
+)
+WORKSPACES_AND_ROOT=(
+    "packages/app"
+    "packages/dimension"
+    "packages/infra"
+    "packages/string"
+    "."
+)
+
+analyze() {
+    echo "Running analysis..."
+    for WORKSPACE in "${WORKSPACES[@]}"; do
+        pushd "${WORKSPACE}"
+        dart fix --dry-run
+        dart format -l 120 .
+        dart analyze
+        popd
+    done
+}
+
+generate() {
+    echo "Running build_runner..."
+    for WORKSPACE in "${WORKSPACES[@]}"; do
+        pushd "${WORKSPACE}"
+        dart run build_runner build --delete-conflicting-outputs
+        popd
+    done
+}
+
+# Apply Dart fixes
+fix() {
+    echo "Applying Dart fixes..."
+    for WORKSPACE in "${WORKSPACES[@]}"; do
+        pushd "${WORKSPACE}"
+        dart fix --apply
+        popd
+    done
+}
+
+get() {
+    echo "Getting dependencies..."
+    for WORKSPACE in "${WORKSPACES_AND_ROOT[@]}"; do
+        pushd "${WORKSPACE}"
+        dart pub get
+        popd
+    done
+}
+
+locale() {
+    echo "Generating localization..."
+    pushd packages/string
+    flutter gen-l10n
+    dart fix --apply
+    popd
+}
+
+upgrade() {
+    echo "Upgrading dependencies..."
+    for WORKSPACE in "${WORKSPACES_AND_ROOT[@]}"; do
+        pushd "${WORKSPACE}"
+        dart pub upgrade
+        popd
+    done
+}
+
+outdated() {
+    echo "Show outdated dependencies..."
+    for WORKSPACE in "${WORKSPACES_AND_ROOT[@]}"; do
+        pushd "${WORKSPACE}"
+        dart pub outdated
+        popd
+    done
+}
+
+help() {
+    echo "Just a wrapper to imitate melos"
+    echo "Usage: $0 {analyze|generate|fix|get|locale|upgrade}"
+    exit 1
+}
+
+case "$1" in
+analyze) analyze ;;
+fix) fix ;;
+generate) generate ;;
+get) get ;;
+locale) locale ;;
+outdated) outdated ;;
+upgrade) upgrade ;;
+*) help ;;
+esac
