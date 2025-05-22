@@ -1,75 +1,73 @@
-import 'package:app/src/infra/provider/input_files_state.dart';
-import 'package:app/src/infra/provider/output_path_state.dart';
-import 'package:app/src/infra/provider/regions_state.dart';
-import 'package:app/src/infra/provider/xml_service_state.dart';
-import 'package:dimension/dimension.dart';
-import 'package:infra/infra_repositories.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:app/data/providers/file_picker_result_notifier.dart';
+import 'package:app/data/providers/output_path_notifier.dart';
+import 'package:app/data/providers/preferences_notifier.dart';
+import 'package:app/data/providers/regions_notifier.dart';
+import 'package:app/data/providers/xml_service_notifier.dart';
+import 'package:app/data/repositories/preferences_repository.dart';
+import 'package:artistic/artistic.dart';
+import 'package:domain/domain.dart';
 import 'package:string/string.dart';
 import 'package:watch_it/watch_it.dart';
 
 Future<void> serviceLocator() async {
   di
-    ..registerSingleton<FilePickerResultNotifier>(FilePickerResultNotifier())
-    ..registerSingleton<OutputPathNotifier>(OutputPathNotifier());
+    ..registerSingleton<FilePickerResultNotifierInterface>(FilePickerResultNotifier())
+    ..registerSingleton<OutputPathNotifierInterface>(OutputPathNotifier())
+    ..registerSingleton<PreferencesRepositoryInterface>(PreferencesRepository());
 
-  final Iterable<Type> dependsOn1 = [SharedPreferencesAsync];
-  final Iterable<Type> dependsOn2 = [...dependsOn1, PreferencesNotifier];
-  final Iterable<Type> dependsOn3 = [...dependsOn2, LocaleNotifier];
-  final Iterable<Type> dependsOn4 = [...dependsOn3, RegionsFirstMatchNotifier, RegionsNotifier];
+  final Iterable<Type> dependsOn1 = [PreferencesNotifierInterface];
+  final Iterable<Type> dependsOn2 = [...dependsOn1, LocaleNotifierInterface];
+  final Iterable<Type> dependsOn3 = [...dependsOn2, RegionsFirstMatchNotifierInterface, RegionsNotifierInterface];
+
   di
-    ..registerSingletonAsync<SharedPreferencesAsync>(
-      () async => SharedPreferencesAsync(),
-    )
-    ..registerSingletonAsync<PreferencesNotifier>(
+    ..registerSingletonAsync<PreferencesNotifierInterface>(
       () async {
-        final preferencesNotifier = PreferencesNotifier(di<SharedPreferencesAsync>());
+        final preferencesNotifier = PreferencesNotifier(di<PreferencesRepositoryInterface>());
         await preferencesNotifier.init();
         return preferencesNotifier;
       },
+    )
+    ..registerSingletonWithDependencies<ThemeColorNotifierInterface>(
+      () => ThemeColorNotifier(di<PreferencesNotifierInterface>().value),
       dependsOn: dependsOn1,
     )
-    ..registerSingletonWithDependencies<ColorNotifier>(
-      () => ColorNotifier(di<PreferencesNotifier>().value),
+    ..registerSingletonWithDependencies<LocaleNotifierInterface>(
+      () => LocaleNotifier(di<PreferencesNotifierInterface>().value),
+      dependsOn: dependsOn1,
+    )
+    ..registerSingletonWithDependencies<ThemeModeNotifierInterface>(
+      () => ThemeModeNotifier(di<PreferencesNotifierInterface>().value),
+      dependsOn: dependsOn1,
+    )
+    ..registerSingletonWithDependencies<RegionsFirstMatchNotifierInterface>(
+      () => RegionsFirstMatchNotifier(di<PreferencesNotifierInterface>().value),
+      dependsOn: dependsOn1,
+    )
+    ..registerSingletonWithDependencies<RegionsNotifierInterface>(
+      () => RegionsNotifier(di<PreferencesNotifierInterface>().value),
+      dependsOn: dependsOn1,
+    )
+    ..registerSingletonWithDependencies<AppLocalizationsNotifierInterface>(
+      () => AppLocalizationsNotifier(di<LocaleNotifierInterface>()),
       dependsOn: dependsOn2,
     )
-    ..registerSingletonWithDependencies<LocaleNotifier>(
-      () => LocaleNotifier(di<PreferencesNotifier>().value),
-      dependsOn: dependsOn2,
-    )
-    ..registerSingletonWithDependencies<ThemeModeNotifier>(
-      () => ThemeModeNotifier(di<PreferencesNotifier>().value),
-      dependsOn: dependsOn2,
-    )
-    ..registerSingletonWithDependencies<RegionsFirstMatchNotifier>(
-      () => RegionsFirstMatchNotifier(di<PreferencesNotifier>().value),
-      dependsOn: dependsOn2,
-    )
-    ..registerSingletonWithDependencies<RegionsNotifier>(
-      () => RegionsNotifier(di<PreferencesNotifier>().value),
-      dependsOn: dependsOn2,
-    )
-    ..registerSingletonWithDependencies<AppLocalizationsNotifier>(
-      () => AppLocalizationsNotifier(di<LocaleNotifier>()),
+    ..registerSingletonWithDependencies<XmlServiceFilterNotifierInterface>(
+      () => XmlServiceFilterNotifier(
+        filePickerResultNotifier: di<FilePickerResultNotifierInterface>(),
+        outputPathNotifier: di<OutputPathNotifierInterface>(),
+        regionFirstMatchNotifier: di<RegionsFirstMatchNotifierInterface>(),
+        regionsNotifier: di<RegionsNotifierInterface>(),
+      ),
       dependsOn: dependsOn3,
     )
-    ..registerSingletonWithDependencies<XmlServiceFilterNotifier>(
-      () => XmlServiceFilterNotifier(
-        filePickerResultNotifier: di<FilePickerResultNotifier>(),
-        outputPathNotifier: di<OutputPathNotifier>(),
-        regionFirstMatchNotifier: di<RegionsFirstMatchNotifier>(),
-        regionsNotifier: di<RegionsNotifier>(),
-      ),
-      dependsOn: dependsOn4,
-    )
-    ..registerSingletonWithDependencies<XmlServiceSaveNotifier>(
+    ..registerSingletonWithDependencies<XmlServiceSaveNotifierInterface>(
       () => XmlServiceSaveNotifier(
-        filePickerResultNotifier: di<FilePickerResultNotifier>(),
-        outputPathNotifier: di<OutputPathNotifier>(),
-        regionFirstMatchNotifier: di<RegionsFirstMatchNotifier>(),
-        regionsNotifier: di<RegionsNotifier>(),
+        filePickerResultNotifier: di<FilePickerResultNotifierInterface>(),
+        outputPathNotifier: di<OutputPathNotifierInterface>(),
+        regionFirstMatchNotifier: di<RegionsFirstMatchNotifierInterface>(),
+        regionsNotifier: di<RegionsNotifierInterface>(),
       ),
-      dependsOn: dependsOn4,
+      dependsOn: dependsOn3,
     );
 
   await di.allReady();

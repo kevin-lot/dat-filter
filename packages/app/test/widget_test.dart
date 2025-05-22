@@ -5,10 +5,9 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:app/src/presentation/molecule/input_files_picker.dart';
-import 'package:app/src/presentation/molecule/output_path_picker.dart';
-import 'package:app/src/presentation/molecule/tabs_panel.dart';
-import 'package:app/src/presentation/organism/layout.dart';
+import 'package:app/module/input_files/widget/input_files_picker.dart';
+import 'package:app/module/output_path/widget/output_path_selector.dart';
+import 'package:app/presentation/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -28,9 +27,8 @@ void main() {
     expect(find.byType(Layout), findsOneWidget);
 
     // Verify that key UI components are present
-    expect(find.byType(PickOutputPath), findsOneWidget);
+    expect(find.byType(OutputPathPicker), findsOneWidget);
     expect(find.byType(InputFilesPicker), findsOneWidget);
-    expect(find.byType(TabsPanel), findsOneWidget);
 
     // Verify that the Go button is present but disabled (since no files are selected)
     final Finder goButtonFinder = find.byType(ElevatedButton);

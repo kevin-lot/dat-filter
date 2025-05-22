@@ -2,16 +2,8 @@
 # then the pattern is relative to the directory level of the particular "*ignore" file itself.
 # Otherwise the pattern may also match at any level below the .gitignore level.
 
-custom
-######
-.cache
-.idea
-packages/**/.dart_tool
-packages/**/build
-pubspec_overrides.yaml
-
-https://github.com/github/gitignore/blob/main/Terraform.gitignore
-#################################################################
+# https://github.com/github/gitignore/blob/main/Terraform.gitignore
+###################################################################
 # Local .terraform directories
 .terraform/
 
@@ -50,8 +42,8 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-https://github.com/github/gitignore/blob/main/Flutter.gitignore
-###############################################################
+# https://github.com/github/gitignore/blob/main/Flutter.gitignore
+#################################################################
 # Flutter repo-specific
 /bin/cache/
 /bin/internal/bootstrap.bat
@@ -161,8 +153,8 @@ app.*.symbols
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
 
-https://github.com/github/gitignore/blob/main/Dart.gitignore
-############################################################
+# https://github.com/github/gitignore/blob/main/Dart.gitignore
+##############################################################
 # See https://www.dartlang.org/guides/libraries/private-files
 
 # Files and directories created by pub
@@ -191,8 +183,8 @@ doc/api/
 .flutter-plugins
 .flutter-plugins-dependencies
 
-https://github.com/github/gitignore/blob/main/Global/Linux.gitignore
-####################################################################
+# https://github.com/github/gitignore/blob/main/Global/Linux.gitignore
+######################################################################
 *~
 
 # temporary files which can be created if a process still has a handle open of a deleted file
@@ -210,8 +202,8 @@ https://github.com/github/gitignore/blob/main/Global/Linux.gitignore
 # Log files created by default by the nohup command
 nohup.out
 
-https://github.com/github/gitignore/blob/main/Global/macOS.gitignore
-####################################################################
+# https://github.com/github/gitignore/blob/main/Global/macOS.gitignore
+######################################################################
 # General
 .DS_Store
 .AppleDouble
@@ -237,8 +229,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-########################################################################
+# https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+##########################################################################
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
@@ -317,3 +309,15 @@ fabric.properties
 
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
+
+# custom
+########
+.cache
+.idea
+packages/**/.dart_tool
+packages/**/build
+pubspec_overrides.yaml
+!/packages/artistic/lib/src/out/
+!/packages/infra/lib/src/out/
+!/packages/preferences/lib/src/out/
+!/packages/string/lib/src/provider/

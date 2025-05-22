@@ -4,27 +4,16 @@ set -e # exit on first error
 
 WORKSPACES=(
     "packages/app"
-    "packages/dimension"
-    "packages/infra"
+    "packages/artistic"
+    "packages/domain"
     "packages/string"
-)
-WORKSPACES_AND_ROOT=(
-    "packages/app"
-    "packages/dimension"
-    "packages/infra"
-    "packages/string"
-    "."
 )
 
 analyze() {
     echo "Running analysis..."
-    for WORKSPACE in "${WORKSPACES[@]}"; do
-        pushd "${WORKSPACE}"
-        dart fix --dry-run
-        dart format -l 120 .
-        dart analyze
-        popd
-    done
+    dart format -l 120 .
+    dart fix --dry-run
+    dart analyze
 }
 
 generate() {
@@ -39,20 +28,14 @@ generate() {
 # Apply Dart fixes
 fix() {
     echo "Applying Dart fixes..."
-    for WORKSPACE in "${WORKSPACES[@]}"; do
-        pushd "${WORKSPACE}"
-        dart fix --apply
-        popd
-    done
+    dart fix --apply
+    dart analyze
+    dart format -l 120 .
 }
 
 get() {
     echo "Getting dependencies..."
-    for WORKSPACE in "${WORKSPACES_AND_ROOT[@]}"; do
-        pushd "${WORKSPACE}"
-        dart pub get
-        popd
-    done
+    dart pub get
 }
 
 locale() {
@@ -65,20 +48,12 @@ locale() {
 
 upgrade() {
     echo "Upgrading dependencies..."
-    for WORKSPACE in "${WORKSPACES_AND_ROOT[@]}"; do
-        pushd "${WORKSPACE}"
-        dart pub upgrade
-        popd
-    done
+    dart pub upgrade
 }
 
 outdated() {
     echo "Show outdated dependencies..."
-    for WORKSPACE in "${WORKSPACES_AND_ROOT[@]}"; do
-        pushd "${WORKSPACE}"
-        dart pub outdated
-        popd
-    done
+    dart pub outdated
 }
 
 help() {
