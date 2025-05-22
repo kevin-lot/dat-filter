@@ -33,27 +33,17 @@ mixin _$Preferences {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is Preferences &&
-            const DeepCollectionEquality()
-                .equals(other.configRegions, configRegions) &&
-            (identical(
-                    other.configRegionsFirstMatch, configRegionsFirstMatch) ||
+            const DeepCollectionEquality().equals(other.configRegions, configRegions) &&
+            (identical(other.configRegionsFirstMatch, configRegionsFirstMatch) ||
                 other.configRegionsFirstMatch == configRegionsFirstMatch) &&
-            (identical(other.language, language) ||
-                other.language == language) &&
-            (identical(other.themeMode, themeMode) ||
-                other.themeMode == themeMode) &&
-            (identical(other.themeColor, themeColor) ||
-                other.themeColor == themeColor));
+            (identical(other.language, language) || other.language == language) &&
+            (identical(other.themeMode, themeMode) || other.themeMode == themeMode) &&
+            (identical(other.themeColor, themeColor) || other.themeColor == themeColor));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(configRegions),
-      configRegionsFirstMatch,
-      language,
-      themeMode,
-      themeColor);
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(configRegions),
+      configRegionsFirstMatch, language, themeMode, themeColor);
 
   @override
   String toString() {
@@ -63,9 +53,7 @@ mixin _$Preferences {
 
 /// @nodoc
 abstract mixin class $PreferencesCopyWith<$Res> {
-  factory $PreferencesCopyWith(
-          Preferences value, $Res Function(Preferences) _then) =
-      _$PreferencesCopyWithImpl;
+  factory $PreferencesCopyWith(Preferences value, $Res Function(Preferences) _then) = _$PreferencesCopyWithImpl;
   @useResult
   $Res call(
       {List<String>? configRegions,
@@ -122,11 +110,7 @@ class _$PreferencesCopyWithImpl<$Res> implements $PreferencesCopyWith<$Res> {
 
 class _Preferences implements Preferences {
   const _Preferences(
-      {final List<String>? configRegions,
-      this.configRegionsFirstMatch,
-      this.language,
-      this.themeMode,
-      this.themeColor})
+      {final List<String>? configRegions, this.configRegionsFirstMatch, this.language, this.themeMode, this.themeColor})
       : _configRegions = configRegions;
 
   final List<String>? _configRegions;
@@ -153,35 +137,24 @@ class _Preferences implements Preferences {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  _$PreferencesCopyWith<_Preferences> get copyWith =>
-      __$PreferencesCopyWithImpl<_Preferences>(this, _$identity);
+  _$PreferencesCopyWith<_Preferences> get copyWith => __$PreferencesCopyWithImpl<_Preferences>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Preferences &&
-            const DeepCollectionEquality()
-                .equals(other._configRegions, _configRegions) &&
-            (identical(
-                    other.configRegionsFirstMatch, configRegionsFirstMatch) ||
+            const DeepCollectionEquality().equals(other._configRegions, _configRegions) &&
+            (identical(other.configRegionsFirstMatch, configRegionsFirstMatch) ||
                 other.configRegionsFirstMatch == configRegionsFirstMatch) &&
-            (identical(other.language, language) ||
-                other.language == language) &&
-            (identical(other.themeMode, themeMode) ||
-                other.themeMode == themeMode) &&
-            (identical(other.themeColor, themeColor) ||
-                other.themeColor == themeColor));
+            (identical(other.language, language) || other.language == language) &&
+            (identical(other.themeMode, themeMode) || other.themeMode == themeMode) &&
+            (identical(other.themeColor, themeColor) || other.themeColor == themeColor));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_configRegions),
-      configRegionsFirstMatch,
-      language,
-      themeMode,
-      themeColor);
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_configRegions),
+      configRegionsFirstMatch, language, themeMode, themeColor);
 
   @override
   String toString() {
@@ -190,11 +163,8 @@ class _Preferences implements Preferences {
 }
 
 /// @nodoc
-abstract mixin class _$PreferencesCopyWith<$Res>
-    implements $PreferencesCopyWith<$Res> {
-  factory _$PreferencesCopyWith(
-          _Preferences value, $Res Function(_Preferences) _then) =
-      __$PreferencesCopyWithImpl;
+abstract mixin class _$PreferencesCopyWith<$Res> implements $PreferencesCopyWith<$Res> {
+  factory _$PreferencesCopyWith(_Preferences value, $Res Function(_Preferences) _then) = __$PreferencesCopyWithImpl;
   @override
   @useResult
   $Res call(

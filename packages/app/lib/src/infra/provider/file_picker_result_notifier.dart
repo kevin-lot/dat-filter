@@ -16,11 +16,11 @@ class FilePickerResultNotifier extends ChangeNotifier {
     try {
       final List<PlatformFile> newList = [...value!.files]..removeAt(index); // prevent reference
       value = FilePickerResult(newList);
+      notifyListeners();
     } on RangeError {
+      notifyListeners();
     } on Error {
       rethrow;
-    } finally {
-      notifyListeners();
     }
   }
 }

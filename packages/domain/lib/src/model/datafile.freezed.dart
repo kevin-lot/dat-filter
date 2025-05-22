@@ -23,27 +23,22 @@ mixin _$Datafile {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  $DatafileCopyWith<Datafile> get copyWith =>
-      _$DatafileCopyWithImpl<Datafile>(this as Datafile, _$identity);
+  $DatafileCopyWith<Datafile> get copyWith => _$DatafileCopyWithImpl<Datafile>(this as Datafile, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is Datafile &&
-            const DeepCollectionEquality()
-                .equals(other.gamesByName, gamesByName) &&
+            const DeepCollectionEquality().equals(other.gamesByName, gamesByName) &&
             (identical(other.header, header) || other.header == header) &&
             (identical(other.originalGamesCount, originalGamesCount) ||
                 other.originalGamesCount == originalGamesCount));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(gamesByName),
-      header,
-      originalGamesCount);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(gamesByName), header, originalGamesCount);
 
   @override
   String toString() {
@@ -53,11 +48,9 @@ mixin _$Datafile {
 
 /// @nodoc
 abstract mixin class $DatafileCopyWith<$Res> {
-  factory $DatafileCopyWith(Datafile value, $Res Function(Datafile) _then) =
-      _$DatafileCopyWithImpl;
+  factory $DatafileCopyWith(Datafile value, $Res Function(Datafile) _then) = _$DatafileCopyWithImpl;
   @useResult
-  $Res call(
-      {GamesByName gamesByName, XmlElement header, int originalGamesCount});
+  $Res call({GamesByName gamesByName, XmlElement header, int originalGamesCount});
 }
 
 /// @nodoc
@@ -96,10 +89,7 @@ class _$DatafileCopyWithImpl<$Res> implements $DatafileCopyWith<$Res> {
 /// @nodoc
 
 class _Datafile implements Datafile {
-  const _Datafile(
-      {required final GamesByName gamesByName,
-      required this.header,
-      required this.originalGamesCount})
+  const _Datafile({required final GamesByName gamesByName, required this.header, required this.originalGamesCount})
       : _gamesByName = gamesByName;
 
   final GamesByName _gamesByName;
@@ -120,27 +110,22 @@ class _Datafile implements Datafile {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  _$DatafileCopyWith<_Datafile> get copyWith =>
-      __$DatafileCopyWithImpl<_Datafile>(this, _$identity);
+  _$DatafileCopyWith<_Datafile> get copyWith => __$DatafileCopyWithImpl<_Datafile>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Datafile &&
-            const DeepCollectionEquality()
-                .equals(other._gamesByName, _gamesByName) &&
+            const DeepCollectionEquality().equals(other._gamesByName, _gamesByName) &&
             (identical(other.header, header) || other.header == header) &&
             (identical(other.originalGamesCount, originalGamesCount) ||
                 other.originalGamesCount == originalGamesCount));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_gamesByName),
-      header,
-      originalGamesCount);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_gamesByName), header, originalGamesCount);
 
   @override
   String toString() {
@@ -149,14 +134,11 @@ class _Datafile implements Datafile {
 }
 
 /// @nodoc
-abstract mixin class _$DatafileCopyWith<$Res>
-    implements $DatafileCopyWith<$Res> {
-  factory _$DatafileCopyWith(_Datafile value, $Res Function(_Datafile) _then) =
-      __$DatafileCopyWithImpl;
+abstract mixin class _$DatafileCopyWith<$Res> implements $DatafileCopyWith<$Res> {
+  factory _$DatafileCopyWith(_Datafile value, $Res Function(_Datafile) _then) = __$DatafileCopyWithImpl;
   @override
   @useResult
-  $Res call(
-      {GamesByName gamesByName, XmlElement header, int originalGamesCount});
+  $Res call({GamesByName gamesByName, XmlElement header, int originalGamesCount});
 }
 
 /// @nodoc

@@ -1,4 +1,4 @@
-import 'package:app/src/domain/model/game.dart';
+import 'package:domain/src/model/game.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:xml/xml.dart';
 

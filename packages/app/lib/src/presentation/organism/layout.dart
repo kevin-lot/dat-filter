@@ -1,5 +1,5 @@
-import 'package:app/src/infra/provider/input_files_state.dart';
-import 'package:app/src/infra/provider/output_path_state.dart';
+import 'package:app/src/infra/provider/file_picker_result_notifier.dart';
+import 'package:app/src/infra/provider/output_path_notifier.dart';
 import 'package:app/src/presentation/molecule/input_files_picker.dart';
 import 'package:app/src/presentation/molecule/list_files.dart';
 import 'package:app/src/presentation/molecule/output_path_picker.dart';
@@ -12,20 +12,18 @@ import 'package:string/string.dart';
 import 'package:watch_it/watch_it.dart';
 
 class Layout extends WatchingStatefulWidget {
-  const Layout({
-    super.key,
-  });
+  const Layout({super.key});
 
   @override
   State<Layout> createState() => _Layout();
 }
 
-class _Layout extends State<Layout> with SingleTickerProviderStateMixin {
+class _Layout extends State<Layout> {
   @override
   Widget build(final BuildContext context) {
-    final AppLocalizations appLocalizations = watchPropertyValue((final AppLocalizationsNotifier s) => s.value);
-    final FilePickerResult? filePickerResult = watchPropertyValue((final FilePickerResultNotifier s) => s.value);
-    final String? outputPath = watchPropertyValue((final OutputPathNotifier s) => s.value);
+    final AppLocalizations appLocalizations = watchPropertyValue((final AppLocalizationsNotifier n) => n.value);
+    final FilePickerResult? filePickerResult = watchPropertyValue((final FilePickerResultNotifier n) => n.value);
+    final String? outputPath = watchPropertyValue((final OutputPathNotifier n) => n.value);
 
     return Scaffold(
       body: Padding(

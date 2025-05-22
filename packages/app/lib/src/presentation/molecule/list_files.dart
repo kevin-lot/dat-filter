@@ -1,4 +1,4 @@
-import 'package:app/src/infra/provider/input_files_state.dart';
+import 'package:app/src/infra/provider/file_picker_result_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:watch_it/watch_it.dart';
 
@@ -11,7 +11,7 @@ class ListFiles extends WatchingWidget {
     final Color evenItemColor = colorScheme.primary.withValues(alpha: 0.15);
     final Color oddItemColor = colorScheme.primary.withValues(alpha: 0.05);
 
-    final List<String?>? paths = watchPropertyValue((final FilePickerResultNotifier s) => s.value)?.paths;
+    final List<String?>? paths = watchPropertyValue((final FilePickerResultNotifier n) => n.value)?.paths;
     if (paths == null) {
       return const _Container(); // maintain height
     }

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:app/service_locator.dart';
 import 'package:app/src/presentation/organism/layout.dart';
 import 'package:collection/collection.dart';
-import 'package:dimension/dimension.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
@@ -68,16 +68,16 @@ class Main extends WatchingWidget {
   Widget build(final BuildContext context) {
     /// Don't use context and prefer the appLocalizationProvider to get translations.
     /// This "watchPropertyValue" configures MaterialApp localization properties.
-    final Locale locale = watchPropertyValue((final LocaleNotifier s) => s.value);
-    final ThemeMode themeMode = watchPropertyValue((final ThemeModeNotifier s) => s.value);
-    final YaruVariant yaruVariant = watchPropertyValue((final ColorNotifier s) => s.value).yaruVariant;
+    final Locale locale = watchPropertyValue((final LocaleNotifier n) => n.value);
+    final ThemeMode themeMode = watchPropertyValue((final ThemeModePort n) => n.value);
+    final YaruVariant yaruVariant = watchPropertyValue((final ColorPort n) => n.value).yaruVariant;
 
     if (!kIsWeb && Platform.isLinux) {
       return YaruTheme(
         builder: (final BuildContext context, final YaruThemeData yaru, final Widget? child) {
           return MaterialApp(
             themeMode: themeMode,
-            home: const Layout(),
+            home: child,
             locale: locale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
@@ -85,6 +85,7 @@ class Main extends WatchingWidget {
             darkTheme: yaruVariant.darkTheme,
           );
         },
+        child: const Layout(),
       );
     }
 

@@ -19,17 +19,8 @@ class ColorPanel extends WatchingWidget {
   final ValueChanged<YaruVariant> onChanged;
 
   @override
-  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(ColorProperty('selected', selected))
-      ..add(DiagnosticsProperty<List<YaruVariant>>('availableColors', availableYaruVariants))
-      ..add(DiagnosticsProperty<ValueChanged<YaruVariant>>('onChanged', onChanged));
-  }
-
-  @override
   Widget build(final BuildContext context) {
-    final AppLocalizations appLocalizations = watchPropertyValue((final AppLocalizationsNotifier s) => s.value);
+    final AppLocalizations appLocalizations = watchPropertyValue((final AppLocalizationsNotifier n) => n.value);
 
     return Dialog(
       insetPadding: const EdgeInsets.symmetric(
@@ -64,5 +55,14 @@ class ColorPanel extends WatchingWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(ColorProperty('selected', selected))
+      ..add(DiagnosticsProperty<List<YaruVariant>>('availableColors', availableYaruVariants))
+      ..add(DiagnosticsProperty<ValueChanged<YaruVariant>>('onChanged', onChanged));
   }
 }

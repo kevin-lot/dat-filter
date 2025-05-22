@@ -24,7 +24,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get configStopOnFirstMatch => 'Stopper dès la première correspondance';
 
   @override
-  String get configStopOnFirstMatchDescription => 'Conserver la première version qui correspond à l\'ordre de la sélection.';
+  String get configStopOnFirstMatchDescription =>
+      'Conserver la première version qui correspond à l\'ordre de la sélection.';
 
   @override
   String get go => 'Go';

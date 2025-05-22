@@ -1,16 +1,14 @@
-import 'package:app/src/domain/model/datafile.dart';
-import 'package:app/src/infra/provider/xml_service_state.dart';
-import 'package:app/src/presentation/atom/list_tile_container.dart';
+import 'package:app/src/infra/provider/xml_service_notifier.dart';
 import 'package:dimension/dimension.dart';
+import 'package:domain/domain.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:string/string.dart';
 import 'package:watch_it/watch_it.dart';
 
 class ProcessPanel extends WatchingWidget {
-  const ProcessPanel({
-    super.key,
-  });
+  const ProcessPanel({super.key});
 
   @override
   Widget build(final BuildContext context) {
@@ -27,7 +25,7 @@ class ProcessPanel extends WatchingWidget {
             ),
             const SizedBox(height: Spaces.primary),
             ListTile(
-              title: ListTileContainer(
+              title: _ListTileContainer(
                 first: const SizedBox.shrink(),
                 second: Text(
                   appLocalizations.selected,
@@ -77,7 +75,7 @@ class _ListView extends WatchingWidget {
       itemBuilder: (final BuildContext context, final int index) {
         return Material(
           child: ListTile(
-            title: ListTileContainer(
+            title: _ListTileContainer(
               first: Text(map.keys.elementAt(index).name, overflow: TextOverflow.fade, maxLines: 3),
               second: Text(
                 map.values.elementAt(index).gamesByName.totalLength.toString(),
@@ -132,5 +130,39 @@ class _Buttons extends WatchingWidget {
         ),
       ],
     );
+  }
+}
+
+class _ListTileContainer extends StatelessWidget {
+  const _ListTileContainer({
+    required this.first,
+    required this.second,
+    required this.third,
+  });
+
+  final Widget first;
+  final Widget second;
+  final Widget third;
+
+  @override
+  Widget build(final BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Expanded(flex: 4, child: first),
+        Expanded(flex: 1, child: second),
+        Expanded(flex: 1, child: third),
+      ],
+    );
+  }
+
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<Widget>('first', first))
+      ..add(DiagnosticsProperty<Widget>('second', second))
+      ..add(DiagnosticsProperty<Widget>('third', third));
   }
 }

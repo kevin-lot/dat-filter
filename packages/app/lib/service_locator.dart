@@ -1,9 +1,10 @@
-import 'package:app/src/infra/provider/input_files_state.dart';
-import 'package:app/src/infra/provider/output_path_state.dart';
-import 'package:app/src/infra/provider/regions_state.dart';
-import 'package:app/src/infra/provider/xml_service_state.dart';
+import 'package:app/src/infra/provider/file_picker_result_notifier.dart';
+import 'package:app/src/infra/provider/output_path_notifier.dart';
+import 'package:app/src/infra/provider/regions_notifier.dart';
+import 'package:app/src/infra/provider/xml_service_notifier.dart';
 import 'package:dimension/dimension.dart';
-import 'package:infra/infra_repositories.dart';
+import 'package:domain/domain.dart';
+import 'package:preferences/preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string/string.dart';
 import 'package:watch_it/watch_it.dart';
@@ -14,14 +15,14 @@ Future<void> serviceLocator() async {
     ..registerSingleton<OutputPathNotifier>(OutputPathNotifier());
 
   final Iterable<Type> dependsOn1 = [SharedPreferencesAsync];
-  final Iterable<Type> dependsOn2 = [...dependsOn1, PreferencesNotifier];
+  final Iterable<Type> dependsOn2 = [...dependsOn1, PreferencesPort];
   final Iterable<Type> dependsOn3 = [...dependsOn2, LocaleNotifier];
   final Iterable<Type> dependsOn4 = [...dependsOn3, RegionsFirstMatchNotifier, RegionsNotifier];
   di
     ..registerSingletonAsync<SharedPreferencesAsync>(
       () async => SharedPreferencesAsync(),
     )
-    ..registerSingletonAsync<PreferencesNotifier>(
+    ..registerSingletonAsync<PreferencesPort>(
       () async {
         final preferencesNotifier = PreferencesNotifier(di<SharedPreferencesAsync>());
         await preferencesNotifier.init();
@@ -29,24 +30,24 @@ Future<void> serviceLocator() async {
       },
       dependsOn: dependsOn1,
     )
-    ..registerSingletonWithDependencies<ColorNotifier>(
-      () => ColorNotifier(di<PreferencesNotifier>().value),
+    ..registerSingletonWithDependencies<ColorPort>(
+      () => ColorNotifier(di<PreferencesPort>().value),
       dependsOn: dependsOn2,
     )
     ..registerSingletonWithDependencies<LocaleNotifier>(
-      () => LocaleNotifier(di<PreferencesNotifier>().value),
+      () => LocaleNotifier(di<PreferencesPort>().value),
       dependsOn: dependsOn2,
     )
-    ..registerSingletonWithDependencies<ThemeModeNotifier>(
-      () => ThemeModeNotifier(di<PreferencesNotifier>().value),
+    ..registerSingletonWithDependencies<ThemeModePort>(
+      () => ThemeModeNotifier(di<PreferencesPort>().value),
       dependsOn: dependsOn2,
     )
     ..registerSingletonWithDependencies<RegionsFirstMatchNotifier>(
-      () => RegionsFirstMatchNotifier(di<PreferencesNotifier>().value),
+      () => RegionsFirstMatchNotifier(di<PreferencesPort>().value),
       dependsOn: dependsOn2,
     )
     ..registerSingletonWithDependencies<RegionsNotifier>(
-      () => RegionsNotifier(di<PreferencesNotifier>().value),
+      () => RegionsNotifier(di<PreferencesPort>().value),
       dependsOn: dependsOn2,
     )
     ..registerSingletonWithDependencies<AppLocalizationsNotifier>(

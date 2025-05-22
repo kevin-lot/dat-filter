@@ -8,7 +8,7 @@ class LanguagePicker extends WatchingWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final Locale locale = watchPropertyValue((final LocaleNotifier s) => s.value);
+    final Locale locale = watchPropertyValue((final LocaleNotifier n) => n.value);
 
     final List<(String, Locale)> supportedLocales =
         AppLocalizations.supportedLocales.map((final Locale el) => (el.languageCode, el)).toList();

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
-import 'package:infra/src/domain/model/preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 extension on SharedPreferencesAsync {
@@ -19,11 +19,12 @@ extension on SharedPreferencesAsync {
 }
 
 /// act like a repository
-class PreferencesNotifier extends ChangeNotifier {
+class PreferencesNotifier extends ChangeNotifier implements PreferencesPort {
   PreferencesNotifier(this.sharedPreferencesAsync);
 
   final SharedPreferencesAsync sharedPreferencesAsync;
 
+  @override
   Future<void> init() async {
     if (_completer != null) return;
 
@@ -57,14 +58,12 @@ class PreferencesNotifier extends ChangeNotifier {
   static String themeColorKey = 'theme_color';
   static String themeModeKey = 'theme_mode';
 
-  bool isLoading = true;
+  @override
   late Preferences value;
 
+  @override
   Future<void> save(final Preferences newValue) async {
     if (newValue == value) return;
-
-    isLoading = true;
-    notifyListeners();
 
     if (newValue.language != null) {
       await sharedPreferencesAsync.setString(languageKey, newValue.language!);
@@ -82,10 +81,10 @@ class PreferencesNotifier extends ChangeNotifier {
       await sharedPreferencesAsync.setInt(themeColorKey, newValue.themeColor!.toARGB32());
     }
 
-    isLoading = false;
     notifyListeners();
   }
 
+  @override
   void set(final Preferences newValue) {
     if (newValue == value) return;
     value = newValue;

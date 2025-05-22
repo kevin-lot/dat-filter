@@ -23,8 +23,7 @@ mixin _$Region {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  $RegionCopyWith<Region> get copyWith =>
-      _$RegionCopyWithImpl<Region>(this as Region, _$identity);
+  $RegionCopyWith<Region> get copyWith => _$RegionCopyWithImpl<Region>(this as Region, _$identity);
 
   @override
   bool operator ==(Object other) {
@@ -32,10 +31,8 @@ mixin _$Region {
         (other.runtimeType == runtimeType &&
             other is Region &&
             (identical(other.code, code) || other.code == code) &&
-            (identical(other.isSelected, isSelected) ||
-                other.isSelected == isSelected) &&
-            (identical(other.isEmphasis, isEmphasis) ||
-                other.isEmphasis == isEmphasis));
+            (identical(other.isSelected, isSelected) || other.isSelected == isSelected) &&
+            (identical(other.isEmphasis, isEmphasis) || other.isEmphasis == isEmphasis));
   }
 
   @override
@@ -49,8 +46,7 @@ mixin _$Region {
 
 /// @nodoc
 abstract mixin class $RegionCopyWith<$Res> {
-  factory $RegionCopyWith(Region value, $Res Function(Region) _then) =
-      _$RegionCopyWithImpl;
+  factory $RegionCopyWith(Region value, $Res Function(Region) _then) = _$RegionCopyWithImpl;
   @useResult
   $Res call({String code, bool isSelected, bool isEmphasis});
 }
@@ -91,9 +87,7 @@ class _$RegionCopyWithImpl<$Res> implements $RegionCopyWith<$Res> {
 /// @nodoc
 
 class _Region extends Region {
-  const _Region(
-      {required this.code, required this.isSelected, this.isEmphasis = false})
-      : super._();
+  const _Region({required this.code, required this.isSelected, this.isEmphasis = false}) : super._();
 
   @override
   final String code;
@@ -108,8 +102,7 @@ class _Region extends Region {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  _$RegionCopyWith<_Region> get copyWith =>
-      __$RegionCopyWithImpl<_Region>(this, _$identity);
+  _$RegionCopyWith<_Region> get copyWith => __$RegionCopyWithImpl<_Region>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
@@ -117,10 +110,8 @@ class _Region extends Region {
         (other.runtimeType == runtimeType &&
             other is _Region &&
             (identical(other.code, code) || other.code == code) &&
-            (identical(other.isSelected, isSelected) ||
-                other.isSelected == isSelected) &&
-            (identical(other.isEmphasis, isEmphasis) ||
-                other.isEmphasis == isEmphasis));
+            (identical(other.isSelected, isSelected) || other.isSelected == isSelected) &&
+            (identical(other.isEmphasis, isEmphasis) || other.isEmphasis == isEmphasis));
   }
 
   @override
@@ -134,8 +125,7 @@ class _Region extends Region {
 
 /// @nodoc
 abstract mixin class _$RegionCopyWith<$Res> implements $RegionCopyWith<$Res> {
-  factory _$RegionCopyWith(_Region value, $Res Function(_Region) _then) =
-      __$RegionCopyWithImpl;
+  factory _$RegionCopyWith(_Region value, $Res Function(_Region) _then) = __$RegionCopyWithImpl;
   @override
   @useResult
   $Res call({String code, bool isSelected, bool isEmphasis});

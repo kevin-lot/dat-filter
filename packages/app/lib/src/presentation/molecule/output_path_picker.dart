@@ -1,9 +1,12 @@
-import 'package:app/src/infra/provider/output_path_state.dart';
+import 'package:app/src/infra/provider/output_path_notifier.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logging/logging.dart';
 import 'package:string/string.dart';
 import 'package:watch_it/watch_it.dart';
+
+final Logger _logger = Logger('PickOutputPath');
 
 class PickOutputPath extends WatchingStatefulWidget {
   const PickOutputPath({super.key});
@@ -17,8 +20,8 @@ class _PickOutputPath extends State<PickOutputPath> {
 
   @override
   Widget build(final BuildContext context) {
-    final AppLocalizations appLocalizations = watchPropertyValue((final AppLocalizationsNotifier s) => s.value);
-    final String? lastPath = watchPropertyValue((final OutputPathNotifier s) => s.value);
+    final AppLocalizations appLocalizations = watchPropertyValue((final AppLocalizationsNotifier n) => n.value);
+    final String? lastPath = watchPropertyValue((final OutputPathNotifier n) => n.value);
 
     return TextField(
       controller: _textEditController,
@@ -57,11 +60,9 @@ class _PickOutputPath extends State<PickOutputPath> {
         _textEditController.text = path;
       });
     } on PlatformException {
-      // _logException('Unsupported operation' + e.toString());
-    } catch (e) {
-      // _logException(e.toString());
-    } finally {
-      // setState(() => _isLoading = false);
+      _logger.fine('Unsupported operation');
+    } on Exception catch (e) {
+      _logger.fine(e.toString());
     }
   }
 }

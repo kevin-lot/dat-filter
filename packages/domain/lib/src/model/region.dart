@@ -1,4 +1,4 @@
-import 'package:app/src/domain/item_selector_interface.dart';
+import 'package:domain/domain.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'region.freezed.dart';

@@ -7,8 +7,7 @@ part 'game.freezed.dart';
 abstract class Game with _$Game {
   const factory Game({
     required final XmlElement originalEl,
-    // name or cloneOf
-    required final String cloneOrName,
+    required final String nameOrCloneOf,
     required final List<String> regions,
   }) = _Game;
 }

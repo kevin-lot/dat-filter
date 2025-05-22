@@ -1,6 +1,6 @@
-import 'package:app/src/domain/item_selector_interface.dart';
 import 'package:app/src/domain/item_selector_service.dart';
 import 'package:dimension/dimension.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:string/string.dart';
@@ -63,7 +63,7 @@ class _ConfigSelector<T extends ItemSelectorInterface<T>> extends State<SelectMu
     final Color evenItemColor = colorScheme.primary.withValues(alpha: 0.15);
     final Color oddItemColor = colorScheme.primary.withValues(alpha: 0.05);
 
-    final AppLocalizations appLocalizations = watchPropertyValue((final AppLocalizationsNotifier s) => s.value);
+    final AppLocalizations appLocalizations = watchPropertyValue((final AppLocalizationsNotifier n) => n.value);
 
     return Column(
       children: <Widget>[

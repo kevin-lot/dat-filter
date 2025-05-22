@@ -1,9 +1,7 @@
 import 'dart:io';
 import 'dart:isolate';
 
-import 'package:app/src/domain/model/datafile.dart';
-import 'package:app/src/domain/model/game.dart';
-import 'package:app/src/domain/model/region.dart';
+import 'package:domain/domain.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:xml/xml.dart';
@@ -186,7 +184,7 @@ class XmlService {
 
   Game _buildGame(final String key, final XmlElement el) {
     return Game(
-      cloneOrName: key,
+      nameOrCloneOf: key,
       originalEl: el,
       regions: _buildRegions(el),
     );

@@ -1,11 +1,10 @@
-import 'package:app/src/domain/model/region.dart';
-import 'package:app/src/infra/provider/regions_state.dart';
+import 'package:app/src/infra/provider/regions_notifier.dart';
+import 'package:app/src/presentation/atom/select_color_picker.dart';
 import 'package:app/src/presentation/molecule/brightness_picker.dart';
 import 'package:app/src/presentation/molecule/language_picker.dart';
-import 'package:app/src/presentation/molecule/theme_picker.dart';
 import 'package:dimension/dimension.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
-import 'package:infra/infra_repositories.dart';
 import 'package:string/string.dart';
 import 'package:watch_it/watch_it.dart';
 import 'package:yaru/theme.dart';
@@ -15,12 +14,12 @@ class Settings extends WatchingWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final AppLocalizations appLocalizations = watchPropertyValue((final AppLocalizationsNotifier s) => s.value);
-    final List<String> configRegions = watchPropertyValue((final RegionsNotifier s) => s.value).selected.codes;
-    final bool configRegionsFirstMatch = watchPropertyValue((final RegionsFirstMatchNotifier s) => s.value);
-    final Locale locale = watchPropertyValue((final LocaleNotifier s) => s.value);
-    final ThemeMode themeBrightness = watchPropertyValue((final ThemeModeNotifier s) => s.value);
-    final Color themeColor = watchPropertyValue((final ColorNotifier s) => s.value) ?? YaruVariant.accents[0].color;
+    final AppLocalizations appLocalizations = watchPropertyValue((final AppLocalizationsNotifier n) => n.value);
+    final List<String> configRegions = watchPropertyValue((final RegionsNotifier n) => n.value).selected.codes;
+    final bool configRegionsFirstMatch = watchPropertyValue((final RegionsFirstMatchNotifier n) => n.value);
+    final Locale locale = watchPropertyValue((final LocaleNotifier n) => n.value);
+    final ThemeMode themeBrightness = watchPropertyValue((final ThemeModePort n) => n.value);
+    final Color themeColor = watchPropertyValue((final ColorPort n) => n.value) ?? YaruVariant.accents[0].color;
 
     return Column(
       spacing: Spaces.primary,
@@ -43,7 +42,7 @@ class Settings extends WatchingWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(appLocalizations.theme),
-            const ThemePicker(),
+            const _ThemePicker(),
           ],
         ),
         ElevatedButton(
@@ -69,6 +68,20 @@ class Settings extends WatchingWidget {
       themeMode: themeBrightness,
       themeColor: themeColor,
     );
-    await di<PreferencesNotifier>().save(preferences);
+    await di<PreferencesPort>().save(preferences);
+  }
+}
+
+class _ThemePicker extends WatchingWidget {
+  const _ThemePicker();
+
+  @override
+  Widget build(final BuildContext context) {
+    final Color color = watchPropertyValue((final ColorPort n) => n.value) ?? YaruVariant.accents[0].color;
+
+    return SelectColorPicker(
+      onChanged: (final Color newValue) => di<ColorPort>().setColor(newValue),
+      firstValue: color,
+    );
   }
 }

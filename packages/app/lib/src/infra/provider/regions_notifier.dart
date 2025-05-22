@@ -1,7 +1,6 @@
 import 'package:app/src/domain/item_selector_service.dart';
-import 'package:app/src/domain/model/region.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/foundation.dart';
-import 'package:infra/infra_repositories.dart';
 
 extension BoolExtension on bool {
   TypeOfMatchRegionEnum toEnum() {

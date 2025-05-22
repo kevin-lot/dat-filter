@@ -1,17 +1,20 @@
 import 'package:app/src/infra/path_service.dart';
-import 'package:app/src/infra/provider/input_files_state.dart';
+import 'package:app/src/infra/provider/file_picker_result_notifier.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logging/logging.dart';
 import 'package:string/string.dart';
 import 'package:watch_it/watch_it.dart';
+
+final Logger _logger = Logger('InputFilesPicker');
 
 class InputFilesPicker extends WatchingWidget {
   const InputFilesPicker({super.key});
 
   @override
   Widget build(final BuildContext context) {
-    final AppLocalizations appLocalizations = watchPropertyValue((final AppLocalizationsNotifier s) => s.value);
+    final AppLocalizations appLocalizations = watchPropertyValue((final AppLocalizationsNotifier n) => n.value);
 
     return ElevatedButton.icon(
       icon: const Icon(Icons.file_open),
@@ -38,9 +41,9 @@ class InputFilesPicker extends WatchingWidget {
 
       di<FilePickerResultNotifier>().set(files);
     } on PlatformException {
-      // _logException('Unsupported operation' + e.toString());
-    } catch (e) {
-      // _logException(e.toString());
+      _logger.fine('Unsupported operation');
+    } on Exception catch (e) {
+      _logger.fine(e.toString());
     }
   }
 }

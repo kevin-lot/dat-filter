@@ -1,7 +1,7 @@
-import 'package:app/src/domain/model/region.dart';
-import 'package:app/src/infra/provider/regions_state.dart';
+import 'package:app/src/infra/provider/regions_notifier.dart';
 import 'package:app/src/presentation/atom/select_multi_picker.dart';
 import 'package:dimension/dimension.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:string/string.dart';
 import 'package:watch_it/watch_it.dart';
@@ -16,9 +16,9 @@ class ConfigRegionsPicker extends WatchingStatefulWidget {
 class _ConfigRegionsPicker extends State<ConfigRegionsPicker> {
   @override
   Widget build(final BuildContext context) {
-    final AppLocalizations appLocalizations = watchPropertyValue((final AppLocalizationsNotifier s) => s.value);
-    final List<Region> regions = watchPropertyValue((final RegionsNotifier s) => s.value);
-    final bool switchValue = watchPropertyValue((final RegionsFirstMatchNotifier s) => s.value);
+    final AppLocalizations appLocalizations = watchPropertyValue((final AppLocalizationsNotifier n) => n.value);
+    final List<Region> regions = watchPropertyValue((final RegionsNotifier n) => n.value);
+    final bool switchValue = watchPropertyValue((final RegionsFirstMatchNotifier n) => n.value);
 
     return Column(
       children: <Widget>[

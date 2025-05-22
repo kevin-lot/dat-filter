@@ -1,7 +1,7 @@
 import 'dart:ui';
 
+import 'package:domain/domain.dart';
 import 'package:flutter/foundation.dart';
-import 'package:infra/infra_repositories.dart';
 import 'package:string/string.dart';
 
 class LocaleNotifier extends ChangeNotifier {

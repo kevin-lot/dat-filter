@@ -1,5 +1,5 @@
-import 'package:app/src/domain/item_selector_interface.dart';
 import 'package:collection/collection.dart';
+import 'package:domain/domain.dart';
 
 class ItemSelectorService<T extends ItemSelectorInterface<T>> {
   const ItemSelectorService(this.defaultList);

@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:app/src/domain/model/datafile.dart';
-import 'package:app/src/domain/model/region.dart';
 import 'package:app/src/domain/xml_service.dart';
-import 'package:app/src/infra/provider/input_files_state.dart';
-import 'package:app/src/infra/provider/output_path_state.dart';
-import 'package:app/src/infra/provider/regions_state.dart';
+import 'package:app/src/infra/provider/file_picker_result_notifier.dart';
+import 'package:app/src/infra/provider/output_path_notifier.dart';
+import 'package:app/src/infra/provider/regions_notifier.dart';
+import 'package:domain/domain.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
 
