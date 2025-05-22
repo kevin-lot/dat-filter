@@ -1,9 +1,10 @@
 import 'dart:io';
 
+import 'package:app/presentation/layout.dart';
 import 'package:app/service_locator.dart';
-import 'package:app/src/presentation/organism/layout.dart';
 import 'package:collection/collection.dart';
-import 'package:dimension/dimension.dart';
+import 'package:domain/domain.dart'
+    show LocaleNotifierInterface, ThemeColorNotifierInterface, ThemeModeNotifierInterface;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
@@ -51,10 +52,10 @@ void main() async {
   SemanticsBinding.instance.ensureSemantics();
 
   await WindowManager.instance.ensureInitialized();
-  await windowManager.waitUntilReadyToShow();
   await windowManager.setMinimumSize(const Size(1024, 780));
   await windowManager.setMaximumSize(const Size(1024, 780));
   await windowManager.setTitle('DatFilter');
+  await windowManager.waitUntilReadyToShow();
 
   await serviceLocator();
 
@@ -68,33 +69,38 @@ class Main extends WatchingWidget {
   Widget build(final BuildContext context) {
     /// Don't use context and prefer the appLocalizationProvider to get translations.
     /// This "watchPropertyValue" configures MaterialApp localization properties.
-    final Locale locale = watchPropertyValue((final LocaleNotifier s) => s.value);
-    final ThemeMode themeMode = watchPropertyValue((final ThemeModeNotifier s) => s.value);
-    final YaruVariant yaruVariant = watchPropertyValue((final ColorNotifier s) => s.value).yaruVariant;
+    final Locale locale = watchPropertyValue((final LocaleNotifierInterface n) => n.value);
+    final ThemeMode themeMode = watchPropertyValue((final ThemeModeNotifierInterface n) => n.value);
+    final YaruVariant yaruVariant = watchPropertyValue((final ThemeColorNotifierInterface n) => n.value).yaruVariant;
 
     if (!kIsWeb && Platform.isLinux) {
       return YaruTheme(
         builder: (final BuildContext context, final YaruThemeData yaru, final Widget? child) {
           return MaterialApp(
-            themeMode: themeMode,
-            home: const Layout(),
+            darkTheme: yaru.darkTheme,
+            home: child,
             locale: locale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            theme: yaruVariant.theme,
-            darkTheme: yaruVariant.darkTheme,
+            theme: yaru.theme,
+            themeMode: yaru.themeMode,
           );
         },
+        data: YaruThemeData(
+          themeMode: themeMode,
+          variant: yaruVariant,
+        ),
+        child: const Layout(),
       );
     }
 
     return MaterialApp(
+      darkTheme: yaruVariant.darkTheme,
       home: const Layout(),
       locale: locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       theme: yaruVariant.theme,
-      darkTheme: yaruVariant.darkTheme,
     );
   }
 }

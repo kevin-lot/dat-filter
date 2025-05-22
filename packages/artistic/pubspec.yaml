@@ -1,0 +1,22 @@
+name: artistic
+description: app package
+publish_to: none
+resolution: workspace
+version: 1.0.0+1
+
+environment:
+    sdk: '>=3.6.0 <5.0.0'
+
+dependencies:
+    collection: any
+    cupertino_icons: ^1.0.8
+    domain:
+    flutter: { sdk: flutter }
+    freezed_annotation: any
+    logging: any
+    meta: any
+    safe_change_notifier: any
+dev_dependencies:
+    build_runner: any
+    flutter_lints: ^5.0.0
+    flutter_test: { sdk: flutter }
