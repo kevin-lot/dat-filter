@@ -1,7 +1,5 @@
-import 'package:app/src/domain/model/datafile.dart';
-import 'package:app/src/domain/model/game.dart';
-import 'package:app/src/domain/model/region.dart';
-import 'package:app/src/domain/xml_service.dart';
+import 'package:app/feature/usecase/xml_service.dart';
+import 'package:domain/domain.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:test/test.dart';
 import 'package:xml/xml.dart';
@@ -15,15 +13,15 @@ void main() {
         'game1': <Game>[
           aUsaGame1,
           aFraGame1,
-          Game(originalEl: XmlElement(XmlName('game1_JPN')), cloneOrName: 'game1_JPN', regions: <String>['JPN']),
+          Game(originalEl: XmlElement(XmlName('game1_JPN')), nameOrCloneOf: 'game1_JPN', regions: <String>['JPN']),
         ],
         'game2': <Game>[
-          Game(originalEl: XmlElement(XmlName('game2_CAN')), cloneOrName: 'game2_CAN', regions: <String>['CAN']),
+          Game(originalEl: XmlElement(XmlName('game2_CAN')), nameOrCloneOf: 'game2_CAN', regions: <String>['CAN']),
           aUsaGame2,
         ],
         'game3': <Game>[
-          Game(originalEl: XmlElement(XmlName('game3_CAN')), cloneOrName: 'game3_CAN', regions: <String>['CAN']),
-          Game(originalEl: XmlElement(XmlName('game3_JPN')), cloneOrName: 'game3_JPN', regions: <String>['JPN']),
+          Game(originalEl: XmlElement(XmlName('game3_CAN')), nameOrCloneOf: 'game3_CAN', regions: <String>['CAN']),
+          Game(originalEl: XmlElement(XmlName('game3_JPN')), nameOrCloneOf: 'game3_JPN', regions: <String>['JPN']),
         ],
       },
       header: XmlElement(XmlName('header')),

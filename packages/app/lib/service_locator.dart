@@ -1,10 +1,9 @@
-import 'package:app/src/infra/provider/input_files_state.dart';
-import 'package:app/src/infra/provider/output_path_state.dart';
-import 'package:app/src/infra/provider/regions_state.dart';
-import 'package:app/src/infra/provider/xml_service_state.dart';
-import 'package:dimension/dimension.dart';
-import 'package:infra/infra_repositories.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:app/feature/provider/file_picker_result_notifier.dart';
+import 'package:app/feature/provider/output_path_notifier.dart';
+import 'package:app/feature/provider/preferences_notifier.dart';
+import 'package:app/feature/provider/regions_notifier.dart';
+import 'package:app/feature/provider/xml_service_notifier.dart';
+import 'package:artistic/artistic.dart';
 import 'package:string/string.dart';
 import 'package:watch_it/watch_it.dart';
 
@@ -13,45 +12,40 @@ Future<void> serviceLocator() async {
     ..registerSingleton<FilePickerResultNotifier>(FilePickerResultNotifier())
     ..registerSingleton<OutputPathNotifier>(OutputPathNotifier());
 
-  final Iterable<Type> dependsOn1 = [SharedPreferencesAsync];
-  final Iterable<Type> dependsOn2 = [...dependsOn1, PreferencesNotifier];
-  final Iterable<Type> dependsOn3 = [...dependsOn2, LocaleNotifier];
-  final Iterable<Type> dependsOn4 = [...dependsOn3, RegionsFirstMatchNotifier, RegionsNotifier];
+  final Iterable<Type> dependsOn1 = [PreferencesNotifier];
+  final Iterable<Type> dependsOn2 = [...dependsOn1, LocaleNotifier];
+  final Iterable<Type> dependsOn3 = [...dependsOn2, RegionsFirstMatchNotifier, RegionsNotifier];
   di
-    ..registerSingletonAsync<SharedPreferencesAsync>(
-      () async => SharedPreferencesAsync(),
-    )
     ..registerSingletonAsync<PreferencesNotifier>(
       () async {
-        final preferencesNotifier = PreferencesNotifier(di<SharedPreferencesAsync>());
+        final preferencesNotifier = PreferencesNotifier();
         await preferencesNotifier.init();
         return preferencesNotifier;
       },
-      dependsOn: dependsOn1,
     )
     ..registerSingletonWithDependencies<ColorNotifier>(
       () => ColorNotifier(di<PreferencesNotifier>().value),
-      dependsOn: dependsOn2,
+      dependsOn: dependsOn1,
     )
     ..registerSingletonWithDependencies<LocaleNotifier>(
       () => LocaleNotifier(di<PreferencesNotifier>().value),
-      dependsOn: dependsOn2,
+      dependsOn: dependsOn1,
     )
     ..registerSingletonWithDependencies<ThemeModeNotifier>(
       () => ThemeModeNotifier(di<PreferencesNotifier>().value),
-      dependsOn: dependsOn2,
+      dependsOn: dependsOn1,
     )
     ..registerSingletonWithDependencies<RegionsFirstMatchNotifier>(
       () => RegionsFirstMatchNotifier(di<PreferencesNotifier>().value),
-      dependsOn: dependsOn2,
+      dependsOn: dependsOn1,
     )
     ..registerSingletonWithDependencies<RegionsNotifier>(
       () => RegionsNotifier(di<PreferencesNotifier>().value),
-      dependsOn: dependsOn2,
+      dependsOn: dependsOn1,
     )
     ..registerSingletonWithDependencies<AppLocalizationsNotifier>(
       () => AppLocalizationsNotifier(di<LocaleNotifier>()),
-      dependsOn: dependsOn3,
+      dependsOn: dependsOn2,
     )
     ..registerSingletonWithDependencies<XmlServiceFilterNotifier>(
       () => XmlServiceFilterNotifier(
@@ -60,7 +54,7 @@ Future<void> serviceLocator() async {
         regionFirstMatchNotifier: di<RegionsFirstMatchNotifier>(),
         regionsNotifier: di<RegionsNotifier>(),
       ),
-      dependsOn: dependsOn4,
+      dependsOn: dependsOn3,
     )
     ..registerSingletonWithDependencies<XmlServiceSaveNotifier>(
       () => XmlServiceSaveNotifier(
@@ -69,7 +63,7 @@ Future<void> serviceLocator() async {
         regionFirstMatchNotifier: di<RegionsFirstMatchNotifier>(),
         regionsNotifier: di<RegionsNotifier>(),
       ),
-      dependsOn: dependsOn4,
+      dependsOn: dependsOn3,
     );
 
   await di.allReady();
