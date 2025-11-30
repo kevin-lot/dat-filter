@@ -1,6 +1,5 @@
-// dart format width=80
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -33,17 +32,26 @@ mixin _$Preferences {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is Preferences &&
-            const DeepCollectionEquality().equals(other.configRegions, configRegions) &&
-            (identical(other.configRegionsFirstMatch, configRegionsFirstMatch) ||
+            const DeepCollectionEquality()
+                .equals(other.configRegions, configRegions) &&
+            (identical(
+                    other.configRegionsFirstMatch, configRegionsFirstMatch) ||
                 other.configRegionsFirstMatch == configRegionsFirstMatch) &&
             (identical(other.locale, locale) || other.locale == locale) &&
-            (identical(other.themeMode, themeMode) || other.themeMode == themeMode) &&
-            (identical(other.themeColor, themeColor) || other.themeColor == themeColor));
+            (identical(other.themeMode, themeMode) ||
+                other.themeMode == themeMode) &&
+            (identical(other.themeColor, themeColor) ||
+                other.themeColor == themeColor));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(configRegions),
-      configRegionsFirstMatch, locale, themeMode, themeColor);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(configRegions),
+      configRegionsFirstMatch,
+      locale,
+      themeMode,
+      themeColor);
 
   @override
   String toString() {
@@ -53,7 +61,9 @@ mixin _$Preferences {
 
 /// @nodoc
 abstract mixin class $PreferencesCopyWith<$Res> {
-  factory $PreferencesCopyWith(Preferences value, $Res Function(Preferences) _then) = _$PreferencesCopyWithImpl;
+  factory $PreferencesCopyWith(
+          Preferences value, $Res Function(Preferences) _then) =
+      _$PreferencesCopyWithImpl;
   @useResult
   $Res call(
       {List<Region>? configRegions,
@@ -106,11 +116,185 @@ class _$PreferencesCopyWithImpl<$Res> implements $PreferencesCopyWith<$Res> {
   }
 }
 
+/// Adds pattern-matching-related methods to [Preferences].
+extension PreferencesPatterns on Preferences {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_Preferences value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Preferences() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_Preferences value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _Preferences():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_Preferences value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _Preferences() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(List<Region>? configRegions, bool? configRegionsFirstMatch,
+            Locale? locale, ThemeMode? themeMode, Color? themeColor)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Preferences() when $default != null:
+        return $default(_that.configRegions, _that.configRegionsFirstMatch,
+            _that.locale, _that.themeMode, _that.themeColor);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(List<Region>? configRegions, bool? configRegionsFirstMatch,
+            Locale? locale, ThemeMode? themeMode, Color? themeColor)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _Preferences():
+        return $default(_that.configRegions, _that.configRegionsFirstMatch,
+            _that.locale, _that.themeMode, _that.themeColor);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            List<Region>? configRegions,
+            bool? configRegionsFirstMatch,
+            Locale? locale,
+            ThemeMode? themeMode,
+            Color? themeColor)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _Preferences() when $default != null:
+        return $default(_that.configRegions, _that.configRegionsFirstMatch,
+            _that.locale, _that.themeMode, _that.themeColor);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 
 class _Preferences implements Preferences {
   const _Preferences(
-      {final List<Region>? configRegions, this.configRegionsFirstMatch, this.locale, this.themeMode, this.themeColor})
+      {final List<Region>? configRegions,
+      this.configRegionsFirstMatch,
+      this.locale,
+      this.themeMode,
+      this.themeColor})
       : _configRegions = configRegions;
 
   final List<Region>? _configRegions;
@@ -137,24 +321,34 @@ class _Preferences implements Preferences {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  _$PreferencesCopyWith<_Preferences> get copyWith => __$PreferencesCopyWithImpl<_Preferences>(this, _$identity);
+  _$PreferencesCopyWith<_Preferences> get copyWith =>
+      __$PreferencesCopyWithImpl<_Preferences>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Preferences &&
-            const DeepCollectionEquality().equals(other._configRegions, _configRegions) &&
-            (identical(other.configRegionsFirstMatch, configRegionsFirstMatch) ||
+            const DeepCollectionEquality()
+                .equals(other._configRegions, _configRegions) &&
+            (identical(
+                    other.configRegionsFirstMatch, configRegionsFirstMatch) ||
                 other.configRegionsFirstMatch == configRegionsFirstMatch) &&
             (identical(other.locale, locale) || other.locale == locale) &&
-            (identical(other.themeMode, themeMode) || other.themeMode == themeMode) &&
-            (identical(other.themeColor, themeColor) || other.themeColor == themeColor));
+            (identical(other.themeMode, themeMode) ||
+                other.themeMode == themeMode) &&
+            (identical(other.themeColor, themeColor) ||
+                other.themeColor == themeColor));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(_configRegions),
-      configRegionsFirstMatch, locale, themeMode, themeColor);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_configRegions),
+      configRegionsFirstMatch,
+      locale,
+      themeMode,
+      themeColor);
 
   @override
   String toString() {
@@ -163,8 +357,11 @@ class _Preferences implements Preferences {
 }
 
 /// @nodoc
-abstract mixin class _$PreferencesCopyWith<$Res> implements $PreferencesCopyWith<$Res> {
-  factory _$PreferencesCopyWith(_Preferences value, $Res Function(_Preferences) _then) = __$PreferencesCopyWithImpl;
+abstract mixin class _$PreferencesCopyWith<$Res>
+    implements $PreferencesCopyWith<$Res> {
+  factory _$PreferencesCopyWith(
+          _Preferences value, $Res Function(_Preferences) _then) =
+      __$PreferencesCopyWithImpl;
   @override
   @useResult
   $Res call(

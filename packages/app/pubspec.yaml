@@ -45,7 +45,7 @@ dependencies:
     watch_it: any
     window_manager: any
     xml: any
-    yaru: 8.0.0
+    yaru: 9.0.0
 dev_dependencies:
     build_runner: any
     # The "flutter_lints" package below contains a set of recommended lints to
