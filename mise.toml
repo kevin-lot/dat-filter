@@ -1,0 +1,54 @@
+[tools]
+flutter = "latest"
+
+[tasks.analyze]
+run = [
+    'dart format -l 120 .',
+    'dart fix --dry-run',
+    'dart analyze',
+]
+
+[tasks.fix]
+run = [
+    'dart fix --apply',
+    'dart analyze',
+    'dart format -l 120 .',
+]
+
+[tasks.get]
+run = 'dart pub get'
+
+
+[tasks.locale]
+run = [
+    'flutter gen-l10n',
+    'dart fix --apply',
+]
+dir = 'packages/string'
+
+[tasks.upgrade]
+run = 'dart pub upgrade'
+
+[tasks.outdated]
+run = 'dart pub outdated'
+
+[tasks.generate]
+run = """
+    WORKSPACES=()
+    WORKSPACE_LIST_OUTPUT=$(dart pub workspace list)
+
+    while IFS= read -r LINE; do
+        if [[ "${LINE}" =~ "Package" ]]; then continue; fi
+
+        WORKSPACE_PATH=$(echo "${LINE}" | awk '{print $2}')
+        if [[ "${WORKSPACE_PATH}" == "./" ]]; then continue; fi
+
+        WORKSPACES+=("${WORKSPACE_PATH}")
+    done <<< $(dart pub workspace list)
+
+    for WORKSPACE in "${WORKSPACES[@]}"; do
+        pushd "${WORKSPACE}"
+        dart run build_runner build --delete-conflicting-outputs
+        popd
+    done
+"""
