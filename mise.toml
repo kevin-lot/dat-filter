@@ -33,7 +33,7 @@ run = 'dart pub upgrade'
 run = 'dart pub outdated'
 
 [tasks.generate]
-run = """
+run = '''
     WORKSPACES=()
     WORKSPACE_LIST_OUTPUT=$(dart pub workspace list)
 
@@ -51,4 +51,4 @@ run = """
         dart run build_runner build --delete-conflicting-outputs
         popd
     done
-"""
+'''
