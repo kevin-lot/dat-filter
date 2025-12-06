@@ -17,7 +17,4 @@ dependencies:
     shared_preferences: any
     xml: any
 dev_dependencies:
-    build_runner: any
-    flutter_lints: ^6.0.0
-    flutter_test: { sdk: flutter }
     freezed: any

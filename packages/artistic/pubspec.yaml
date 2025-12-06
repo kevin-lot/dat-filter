@@ -17,6 +17,3 @@ dependencies:
     meta: any
     safe_change_notifier: any
 dev_dependencies:
-    build_runner: any
-    flutter_lints: ^6.0.0
-    flutter_test: { sdk: flutter }

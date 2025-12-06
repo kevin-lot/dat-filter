@@ -92,9 +92,7 @@ class _ConfigSelector<T extends ItemSelectorInterface<T>> extends State<SelectMu
               Tooltip(
                 message: appLocalizations.sortSelection,
                 child: IconButton(
-                  onPressed: () {
-                    widget.onAutoSort();
-                  },
+                  onPressed: widget.onAutoSort,
                   icon: const Icon(Icons.format_line_spacing),
                 ),
               ),
@@ -124,9 +122,7 @@ class _ConfigSelector<T extends ItemSelectorInterface<T>> extends State<SelectMu
                   ),
                 ),
             ],
-            onReorder: (final int oldIndex, final int newIndex) {
-              widget.onReorder(oldIndex, newIndex);
-            },
+            onReorder: widget.onReorder,
           ),
         ),
       ],
