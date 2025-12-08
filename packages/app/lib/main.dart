@@ -67,11 +67,13 @@ class Main extends WatchingWidget {
 
   @override
   Widget build(final BuildContext context) {
+    final GetIt di = GetIt.instance;
+
     /// Don't use context and prefer the appLocalizationProvider to get translations.
     /// This "watchPropertyValue" configures MaterialApp localization properties.
-    final Locale locale = watchPropertyValue((final LocaleNotifierInterface n) => n.value);
-    final ThemeMode themeMode = watchPropertyValue((final ThemeModeNotifierInterface n) => n.value);
-    final YaruVariant yaruVariant = watchPropertyValue((final ThemeColorNotifierInterface n) => n.value).yaruVariant;
+    final Locale locale = di<LocaleNotifierInterface>().value;
+    final ThemeMode themeMode = di<ThemeModeNotifierInterface>().value;
+    final YaruVariant yaruVariant = di<ThemeColorNotifierInterface>().value.yaruVariant;
 
     if (!kIsWeb && Platform.isLinux) {
       return YaruTheme(

@@ -1,9 +1,6 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:flutter/foundation.dart' show ValueNotifier;
+import 'package:signals/signals_flutter.dart';
 
-abstract interface class OutputPathNotifierInterface extends ChangeNotifier {
-  String? get value;
-
+abstract interface class OutputPathNotifierInterface implements ValueNotifier<String?>, FlutterReadonlySignal<String?> {
   void clear();
-
-  void set(final String newValue);
 }

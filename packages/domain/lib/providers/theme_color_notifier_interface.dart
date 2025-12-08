@@ -1,9 +1,6 @@
 import 'dart:ui' show Color;
 
-import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:flutter/foundation.dart';
+import 'package:signals/signals_flutter.dart';
 
-abstract interface class ThemeColorNotifierInterface extends ChangeNotifier {
-  Color? get value;
-
-  void setColor(final Color newValue);
-}
+abstract interface class ThemeColorNotifierInterface implements ValueNotifier<Color?>, FlutterReadonlySignal<Color?> {}

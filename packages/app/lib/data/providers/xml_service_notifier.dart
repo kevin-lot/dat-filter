@@ -4,19 +4,20 @@ import 'package:app/data/providers/regions_notifier.dart';
 import 'package:app/feature/usecase/xml_service.dart';
 import 'package:domain/domain.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/widgets.dart';
+import 'package:signals/signals_flutter.dart';
 
-abstract class XmlServiceNotifier extends ChangeNotifier {
+abstract class XmlServiceNotifier extends Signal<Map<PlatformFile, Datafile>?>
+    with ValueNotifierSignalMixin<Map<PlatformFile, Datafile>?> {
   XmlServiceNotifier({
     required this.filePickerResultNotifier,
     required this.outputPathNotifier,
     required this.regionFirstMatchNotifier,
     required this.regionsNotifier,
-  }) {
-    filePickerResultNotifier.addListener(_onDependencyChanged);
-    outputPathNotifier.addListener(_onDependencyChanged);
-    regionFirstMatchNotifier.addListener(_onDependencyChanged);
-    regionsNotifier.addListener(_onDependencyChanged);
+  }) : super.lazy() {
+    filePickerResult = computed(() => filePickerResultNotifier.value).value;
+    regions = computed(() => regionsNotifier.value).value;
+    outputPath = computed(() => outputPathNotifier.value).value;
+    regionFirstMatch = computed(() => regionFirstMatchNotifier.value).value;
   }
 
   final FilePickerResultNotifierInterface filePickerResultNotifier;
@@ -28,24 +29,6 @@ abstract class XmlServiceNotifier extends ChangeNotifier {
   List<Region>? regions;
   String? outputPath;
   bool? regionFirstMatch;
-
-  @override
-  void dispose() {
-    filePickerResultNotifier.removeListener(_onDependencyChanged);
-    outputPathNotifier.removeListener(_onDependencyChanged);
-    regionFirstMatchNotifier.removeListener(_onDependencyChanged);
-    regionsNotifier.removeListener(_onDependencyChanged);
-    super.dispose();
-  }
-
-  Future<void> _onDependencyChanged() async {
-    if (filePickerResultNotifier.value != null) filePickerResult = filePickerResultNotifier.value;
-    regions = regionsNotifier.value;
-    if (outputPathNotifier.value != null) outputPath = outputPathNotifier.value;
-    regionFirstMatch = regionFirstMatchNotifier.value;
-
-    notifyListeners();
-  }
 }
 
 class XmlServiceFilterNotifier extends XmlServiceNotifier implements XmlServiceFilterNotifierInterface {
@@ -57,14 +40,11 @@ class XmlServiceFilterNotifier extends XmlServiceNotifier implements XmlServiceF
   });
 
   @override
-  bool isFiltering = false;
-  @override
-  Map<PlatformFile, Datafile>? value;
+  FlutterSignal<bool> isFiltering = signal(false);
 
   @override
   Future<void> filter() async {
-    isFiltering = true;
-    notifyListeners();
+    isFiltering.value = true;
 
     if (filePickerResult == null || regions == null || outputPath == null || regionFirstMatch == null) {
       throw Exception(
@@ -79,14 +59,7 @@ class XmlServiceFilterNotifier extends XmlServiceNotifier implements XmlServiceF
       typeOfMatch: regionFirstMatch!.toEnum(),
     ).filter();
 
-    isFiltering = false;
-    notifyListeners();
-  }
-
-  @override
-  void reset() {
-    value = null;
-    notifyListeners();
+    isFiltering.value = false;
   }
 }
 
@@ -99,12 +72,11 @@ class XmlServiceSaveNotifier extends XmlServiceNotifier implements XmlServiceSav
   });
 
   @override
-  bool isSaving = false;
+  FlutterSignal<bool> isSaving = signal(false);
 
   @override
   Future<void> save() async {
-    isSaving = true;
-    notifyListeners();
+    isSaving.value = true;
 
     if (filePickerResult == null || regions == null || outputPath == null || regionFirstMatch == null) {
       throw Exception(
@@ -119,7 +91,6 @@ class XmlServiceSaveNotifier extends XmlServiceNotifier implements XmlServiceSav
       typeOfMatch: regionFirstMatch!.toEnum(),
     ).save();
 
-    isSaving = false;
-    notifyListeners();
+    isSaving.value = false;
   }
 }

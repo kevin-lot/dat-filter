@@ -1,20 +1,14 @@
 import 'package:domain/domain.dart' show OutputPathNotifierInterface;
-import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:signals/signals_flutter.dart';
 
-class OutputPathNotifier extends ChangeNotifier implements OutputPathNotifierInterface {
-  @override
-  String? value;
+class OutputPathNotifier extends Signal<String?>
+    with ValueNotifierSignalMixin<String?>
+    implements OutputPathNotifierInterface {
+  OutputPathNotifier() : super.lazy();
 
   @override
   void clear() {
     value = null;
-    notifyListeners();
-  }
-
-  @override
-  void set(final String newValue) {
-    if (newValue == value) return;
-    value = newValue;
     notifyListeners();
   }
 }

@@ -1,9 +1,9 @@
 import 'package:domain/domain.dart';
-import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:flutter/foundation.dart' show ValueNotifier;
+import 'package:signals/signals_flutter.dart';
 
-abstract interface class RegionsNotifierInterface extends ChangeNotifier {
-  List<Region> get value;
-
+abstract interface class RegionsNotifierInterface
+    implements ValueNotifier<List<Region>>, FlutterReadonlySignal<List<Region>> {
   List<Region> get selected;
 
   /// Keep the selected items on top

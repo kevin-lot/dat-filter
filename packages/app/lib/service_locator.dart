@@ -6,20 +6,20 @@ import 'package:app/data/providers/xml_service_notifier.dart';
 import 'package:app/data/repositories/preferences_repository.dart';
 import 'package:artistic/artistic.dart';
 import 'package:domain/domain.dart';
+import 'package:get_it/get_it.dart';
 import 'package:string/string.dart';
-import 'package:watch_it/watch_it.dart';
 
 Future<void> serviceLocator() async {
-  di
-    ..registerSingleton<FilePickerResultNotifierInterface>(FilePickerResultNotifier())
-    ..registerSingleton<OutputPathNotifierInterface>(OutputPathNotifier())
-    ..registerSingleton<PreferencesRepositoryInterface>(PreferencesRepository());
+  final GetIt di = GetIt.instance;
 
   final Iterable<Type> dependsOn1 = [PreferencesNotifierInterface];
   final Iterable<Type> dependsOn2 = [...dependsOn1, LocaleNotifierInterface];
   final Iterable<Type> dependsOn3 = [...dependsOn2, RegionsFirstMatchNotifierInterface, RegionsNotifierInterface];
 
   di
+    ..registerSingleton<FilePickerResultNotifierInterface>(FilePickerResultNotifier())
+    ..registerSingleton<OutputPathNotifierInterface>(OutputPathNotifier())
+    ..registerSingleton<PreferencesRepositoryInterface>(PreferencesRepository())
     ..registerSingletonAsync<PreferencesNotifierInterface>(
       () async {
         final preferencesNotifier = PreferencesNotifier(di<PreferencesRepositoryInterface>());

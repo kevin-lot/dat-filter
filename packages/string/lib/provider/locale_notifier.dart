@@ -1,25 +1,21 @@
 import 'dart:ui' show Locale;
 
 import 'package:domain/domain.dart';
-import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:signals/signals_flutter.dart';
 import 'package:string/string.dart';
 
-class LocaleNotifier extends ChangeNotifier implements LocaleNotifierInterface {
-  LocaleNotifier(final Preferences preferences) : value = _init(preferences);
+class LocaleNotifier extends Signal<Locale> with ValueNotifierSignalMixin<Locale> implements LocaleNotifierInterface {
+  LocaleNotifier(final Preferences preferences) : super(preferences.locale ?? AppLocalizations.supportedLocales[0]);
 
-  static Locale _init(final Preferences preferences) {
-    return preferences.locale ?? AppLocalizations.supportedLocales[0];
-  }
-
+  // Overriden to prevent bad set
   @override
-  Locale value;
+  bool set(
+    final Locale val, {
+    /// Skip equality check and update the value
+    final bool force = false,
+  }) {
+    assert(AppLocalizations.supportedLocales.contains(val), 'Locale cannot be found');
 
-  @override
-  void choose(final Locale newValue) {
-    if (value == newValue) return;
-    assert(AppLocalizations.supportedLocales.contains(newValue), 'Locale cannot be found');
-
-    value = newValue;
-    notifyListeners();
+    return super.set(val, force: force);
   }
 }

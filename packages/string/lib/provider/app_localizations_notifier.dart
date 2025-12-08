@@ -1,23 +1,23 @@
 import 'dart:ui';
 
-import 'package:domain/domain.dart' show AppLocalizationsNotifierInterface, LocaleNotifierInterface;
-import 'package:safe_change_notifier/safe_change_notifier.dart';
+import 'package:domain/domain.dart'
+    show AppLocalizationsInterface, AppLocalizationsNotifierInterface, LocaleNotifierInterface;
+import 'package:signals/signals_flutter.dart';
 import 'package:string/string.dart';
 
 /// Watch the locale to get the right one.
-class AppLocalizationsNotifier extends SafeChangeNotifier implements AppLocalizationsNotifierInterface {
-  AppLocalizationsNotifier(this.localeNotifier) : value = lookupAppLocalizations(localeNotifier.value) {
-    localeNotifier.addListener(_onDependencyChanged);
+class AppLocalizationsNotifier extends Signal<AppLocalizationsInterface>
+    with ValueNotifierSignalMixin<AppLocalizationsInterface>
+    implements AppLocalizationsNotifierInterface {
+  AppLocalizationsNotifier(
+    final LocaleNotifierInterface localeNotifier,
+  ) : super(lookupAppLocalizations(localeNotifier.value)) {
+    _init(localeNotifier);
   }
 
-  final LocaleNotifierInterface localeNotifier;
-
-  @override
-  AppLocalizations value;
-
-  void _onDependencyChanged() {
-    final Locale locale = localeNotifier.value;
-    value = lookupAppLocalizations(locale);
-    notifyListeners();
+  void _init(final LocaleNotifierInterface localeNotifier) {
+    effect(() {
+      value = lookupAppLocalizations(localeNotifier.value);
+    });
   }
 }
