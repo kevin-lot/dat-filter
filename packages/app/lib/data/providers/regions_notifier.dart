@@ -1,6 +1,6 @@
 import 'package:app/feature/usecase/item_selector_service.dart';
 import 'package:domain/domain.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 extension BoolExtension on bool {
   TypeOfMatchRegionEnum toEnum() {
@@ -8,61 +8,70 @@ extension BoolExtension on bool {
   }
 }
 
-class RegionsNotifier extends ChangeNotifier implements RegionsNotifierInterface {
-  RegionsNotifier(final Preferences preferences)
-      : value = preferences.configRegions == null
-            ? allRegions
-            : const ItemSelectorService<Region>(allRegions).build(preferences.configRegions!);
+class RegionsNotifier extends Notifier<List<Region>> implements RegionsNotifierInterface {
+  RegionsNotifier(this._preferences);
+
+  final Preferences _preferences;
 
   @override
-  List<Region> value;
+  List<Region> get value => state;
 
   List<Region> get _copyValue => [...value];
 
   @override
   List<Region> get selected => (_copyValue..removeWhere((final Region el) => !el.isSelected));
 
+  @override
+  List<Region> build() {
+    state = _preferences.configRegions == null
+        ? allRegions
+        : const ItemSelectorService<Region>(allRegions).build(_preferences.configRegions!);
+    return state;
+  }
+
   /// Keep the selected items on top
   @override
   void autoSort() {
-    value = ItemSelectorService<Region>(_copyValue).autoSort();
-    notifyListeners();
+    state = ItemSelectorService<Region>(_copyValue).autoSort();
   }
 
   @override
   void reorder(final int oldIndex, final int newIndex) {
-    value = ItemSelectorService<Region>(_copyValue).reorder(oldIndex, newIndex);
-    notifyListeners();
+    state = ItemSelectorService<Region>(_copyValue).reorder(oldIndex, newIndex);
   }
 
   @override
   void selectAll() {
-    value = ItemSelectorService<Region>(_copyValue).selectAll();
-    notifyListeners();
+    state = ItemSelectorService<Region>(_copyValue).selectAll();
   }
 
   @override
   void toggleSelected(final int index) {
-    value = ItemSelectorService<Region>(_copyValue).toggleSelected(index);
-    notifyListeners();
+    state = ItemSelectorService<Region>(_copyValue).toggleSelected(index);
   }
 
   @override
   void unselectAll() {
-    value = ItemSelectorService<Region>(_copyValue).unselectAll();
-    notifyListeners();
+    state = ItemSelectorService<Region>(_copyValue).unselectAll();
   }
 }
 
-class RegionsFirstMatchNotifier extends ChangeNotifier implements RegionsFirstMatchNotifierInterface {
-  RegionsFirstMatchNotifier(final Preferences preferences) : value = preferences.configRegionsFirstMatch ?? false;
+class RegionsFirstMatchNotifier extends Notifier<bool> implements RegionsFirstMatchNotifierInterface {
+  RegionsFirstMatchNotifier(this._preferences);
+
+  final Preferences _preferences;
 
   @override
-  bool value;
+  bool get value => state;
+
+  @override
+  bool build() {
+    state = _preferences.configRegionsFirstMatch ?? false;
+    return state;
+  }
 
   @override
   void toggle() {
-    value = !value;
-    notifyListeners();
+    state = !state;
   }
 }

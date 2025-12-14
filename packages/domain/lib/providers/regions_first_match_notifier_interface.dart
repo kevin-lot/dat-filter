@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:riverpod/riverpod.dart';
 
-abstract interface class RegionsFirstMatchNotifierInterface extends ChangeNotifier {
+abstract interface class RegionsFirstMatchNotifierInterface extends Notifier<bool> {
   bool get value;
 
   void toggle();

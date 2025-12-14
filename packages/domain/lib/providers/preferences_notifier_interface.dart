@@ -1,10 +1,8 @@
 import 'package:domain/domain.dart';
-import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:riverpod/riverpod.dart';
 
-abstract interface class PreferencesNotifierInterface extends ChangeNotifier {
+abstract interface class PreferencesNotifierInterface extends AsyncNotifier<Preferences> {
   Preferences get value;
-
-  Future<void> init();
 
   Future<void> save(final Preferences newValue);
 }

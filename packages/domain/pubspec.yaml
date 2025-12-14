@@ -14,6 +14,7 @@ dependencies:
     freezed_annotation: any
     logging: any
     meta: any
+    riverpod: ^3.0.3
     shared_preferences: any
     xml: any
 dev_dependencies:

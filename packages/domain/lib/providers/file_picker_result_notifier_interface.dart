@@ -1,7 +1,7 @@
 import 'package:file_picker/file_picker.dart' show FilePickerResult;
-import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:riverpod/riverpod.dart';
 
-abstract interface class FilePickerResultNotifierInterface extends ChangeNotifier {
+abstract interface class FilePickerResultNotifierInterface extends Notifier<FilePickerResult?> {
   FilePickerResult? get value;
 
   void set(final FilePickerResult newValue);

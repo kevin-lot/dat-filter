@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:domain/domain.dart' show AppLocalizationsInterface;
+import 'package:domain/entity/app_localizations_interface.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

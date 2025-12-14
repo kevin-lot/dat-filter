@@ -1,20 +1,23 @@
 import 'package:domain/domain.dart' show OutputPathNotifierInterface;
-import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class OutputPathNotifier extends ChangeNotifier implements OutputPathNotifierInterface {
+class OutputPathNotifier extends Notifier<String?> implements OutputPathNotifierInterface {
   @override
-  String? value;
+  String? get value => state;
+
+  @override
+  String? build() {
+    state = null;
+    return state;
+  }
 
   @override
   void clear() {
-    value = null;
-    notifyListeners();
+    state = null;
   }
 
   @override
   void set(final String newValue) {
-    if (newValue == value) return;
-    value = newValue;
-    notifyListeners();
+    state = newValue;
   }
 }

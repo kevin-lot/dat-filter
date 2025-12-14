@@ -1,125 +1,95 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:app/data/providers/regions_notifier.dart';
 import 'package:app/feature/usecase/xml_service.dart';
 import 'package:domain/domain.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-abstract class XmlServiceNotifier extends ChangeNotifier {
+abstract class XmlServiceNotifier<T> extends AsyncNotifier<T> {
   XmlServiceNotifier({
-    required this.filePickerResultNotifier,
-    required this.outputPathNotifier,
-    required this.regionFirstMatchNotifier,
-    required this.regionsNotifier,
-  }) {
-    filePickerResultNotifier.addListener(_onDependencyChanged);
-    outputPathNotifier.addListener(_onDependencyChanged);
-    regionFirstMatchNotifier.addListener(_onDependencyChanged);
-    regionsNotifier.addListener(_onDependencyChanged);
-  }
+    required this.filePickerResult,
+    required this.outputPath,
+    required this.regionFirstMatch,
+    required this.regions,
+  });
 
-  final FilePickerResultNotifierInterface filePickerResultNotifier;
-  final OutputPathNotifierInterface outputPathNotifier;
-  final RegionsFirstMatchNotifierInterface regionFirstMatchNotifier;
-  final RegionsNotifierInterface regionsNotifier;
-
-  FilePickerResult? filePickerResult;
-  List<Region>? regions;
-  String? outputPath;
-  bool? regionFirstMatch;
-
-  @override
-  void dispose() {
-    filePickerResultNotifier.removeListener(_onDependencyChanged);
-    outputPathNotifier.removeListener(_onDependencyChanged);
-    regionFirstMatchNotifier.removeListener(_onDependencyChanged);
-    regionsNotifier.removeListener(_onDependencyChanged);
-    super.dispose();
-  }
-
-  Future<void> _onDependencyChanged() async {
-    if (filePickerResultNotifier.value != null) filePickerResult = filePickerResultNotifier.value;
-    regions = regionsNotifier.value;
-    if (outputPathNotifier.value != null) outputPath = outputPathNotifier.value;
-    regionFirstMatch = regionFirstMatchNotifier.value;
-
-    notifyListeners();
-  }
+  final FilePickerResult? filePickerResult;
+  final List<Region>? regions;
+  final String? outputPath;
+  final bool? regionFirstMatch;
 }
 
-class XmlServiceFilterNotifier extends XmlServiceNotifier implements XmlServiceFilterNotifierInterface {
+class XmlServiceFilterNotifier extends XmlServiceNotifier<Map<PlatformFile, Datafile>?>
+    implements XmlServiceFilterNotifierInterface {
   XmlServiceFilterNotifier({
-    required super.filePickerResultNotifier,
-    required super.outputPathNotifier,
-    required super.regionFirstMatchNotifier,
-    required super.regionsNotifier,
+    required super.filePickerResult,
+    required super.outputPath,
+    required super.regionFirstMatch,
+    required super.regions,
   });
 
   @override
-  bool isFiltering = false;
+  Map<PlatformFile, Datafile>? get value => state.value;
+
   @override
-  Map<PlatformFile, Datafile>? value;
+  Future<Map<PlatformFile, Datafile>?> build() {
+    state = const AsyncValue.data(null);
+    return Future.value(null);
+  }
 
   @override
   Future<void> filter() async {
-    isFiltering = true;
-    notifyListeners();
+    assert(
+      !(filePickerResult == null || regions == null || outputPath == null || regionFirstMatch == null),
+      'XmlService: missing requirements to filter (filePickerResult: $filePickerResult, regions: $regions, outputPath: $outputPath, regionFirstMatch: $regionFirstMatch)',
+    );
 
-    if (filePickerResult == null || regions == null || outputPath == null || regionFirstMatch == null) {
-      throw Exception(
-        'XmlService: missing requirements to filter (filePickerResult: $filePickerResult, regions: $regions, outputPath: $outputPath, regionFirstMatch: $regionFirstMatch)',
-      );
-    }
-
-    value = await XmlService(
+    state = const AsyncValue.loading();
+    final Map<PlatformFile, Datafile> result = await XmlService(
       filePickerResult: filePickerResult!,
       outputPath: outputPath!,
       regionsToFilter: regions!,
       typeOfMatch: regionFirstMatch!.toEnum(),
     ).filter();
-
-    isFiltering = false;
-    notifyListeners();
+    state = AsyncValue.data(result);
   }
 
   @override
   void reset() {
-    value = null;
-    notifyListeners();
+    state = const AsyncValue.data(null);
   }
 }
 
-class XmlServiceSaveNotifier extends XmlServiceNotifier implements XmlServiceSaveNotifierInterface {
+class XmlServiceSaveNotifier extends XmlServiceNotifier<File?> implements XmlServiceSaveNotifierInterface {
   XmlServiceSaveNotifier({
-    required super.filePickerResultNotifier,
-    required super.outputPathNotifier,
-    required super.regionFirstMatchNotifier,
-    required super.regionsNotifier,
+    required super.filePickerResult,
+    required super.outputPath,
+    required super.regionFirstMatch,
+    required super.regions,
   });
 
   @override
-  bool isSaving = false;
+  Future<File?> build() {
+    state = const AsyncValue.data(null);
+    return Future.value(null);
+  }
 
   @override
   Future<void> save() async {
-    isSaving = true;
-    notifyListeners();
+    assert(
+      !(filePickerResult == null || regions == null || outputPath == null || regionFirstMatch == null),
+      'XmlService: missing requirements to save (filePickerResult: $filePickerResult, regions: $regions, outputPath: $outputPath, regionFirstMatch: $regionFirstMatch)',
+    );
 
-    if (filePickerResult == null || regions == null || outputPath == null || regionFirstMatch == null) {
-      throw Exception(
-        'XmlService: missing requirements to save (filePickerResult: $filePickerResult, regions: $regions, outputPath: $outputPath, regionFirstMatch: $regionFirstMatch)',
-      );
-    }
-
-    await XmlService(
+    state = const AsyncValue.loading();
+    final File file = await XmlService(
       filePickerResult: filePickerResult!,
       outputPath: outputPath!,
       regionsToFilter: regions!,
       typeOfMatch: regionFirstMatch!.toEnum(),
     ).save();
-
-    isSaving = false;
-    notifyListeners();
+    state = AsyncValue.data(file);
   }
 }

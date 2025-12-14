@@ -1,7 +1,7 @@
 name: string
 description: app package
 environment:
-    sdk: '>=3.6.0 <5.0.0'
+    sdk: ">=3.6.0 <5.0.0"
 publish_to: none
 resolution: workspace
 version: 1.0.0+1
@@ -15,7 +15,7 @@ dependencies:
     intl: any
     logging: any
     meta: any
-    safe_change_notifier: any
+    riverpod: ^3.0.3
 dev_dependencies:
     build_runner: any
     flutter_lints: ^6.0.0

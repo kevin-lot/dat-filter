@@ -1,24 +1,22 @@
 import 'dart:io';
 
+import 'package:app/observer_provider.dart';
 import 'package:app/presentation/layout.dart';
 import 'package:app/service_locator.dart';
 import 'package:collection/collection.dart';
-import 'package:domain/domain.dart'
-    show LocaleNotifierInterface, ThemeColorNotifierInterface, ThemeModeNotifierInterface;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:string/string.dart';
-import 'package:watch_it/watch_it.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:yaru/settings.dart';
 import 'package:yaru/theme.dart';
 
-extension on Color? {
-  YaruVariant get yaruVariant => this == null
-      ? YaruVariant.accents[0]
-      : YaruVariant.accents.firstWhereOrNull((final e) => e.color == this) ?? YaruVariant.accents[0];
+extension on Color {
+  YaruVariant get yaruVariant =>
+      YaruVariant.accents.firstWhereOrNull((final e) => e.color == this) ?? YaruVariant.accents[0];
 }
 
 void main() async {
@@ -57,50 +55,60 @@ void main() async {
   await windowManager.setTitle('DatFilter');
   await windowManager.waitUntilReadyToShow();
 
-  await serviceLocator();
-
   runApp(const Main());
 }
 
-class Main extends WatchingWidget {
+class Main extends StatelessWidget {
   const Main({super.key});
 
   @override
   Widget build(final BuildContext context) {
-    /// Don't use context and prefer the appLocalizationProvider to get translations.
-    /// This "watchPropertyValue" configures MaterialApp localization properties.
-    final Locale locale = watchPropertyValue((final LocaleNotifierInterface n) => n.value);
-    final ThemeMode themeMode = watchPropertyValue((final ThemeModeNotifierInterface n) => n.value);
-    final YaruVariant yaruVariant = watchPropertyValue((final ThemeColorNotifierInterface n) => n.value).yaruVariant;
+    return ProviderScope(
+      observers: [
+        LoggerProvider(),
+      ],
+      child: Consumer(
+        key: key,
+        builder: (final context, final ref, final _) {
+          /// Don't use context and prefer the appLocalizationProvider to get translations.
+          /// This "watchPropertyValue" configures MaterialApp localization properties.
+          final Locale locale = ref.watch(localeNotifierProvider)?.value ?? AppLocalizations.supportedLocales[0];
 
-    if (!kIsWeb && Platform.isLinux) {
-      return YaruTheme(
-        builder: (final BuildContext context, final YaruThemeData yaru, final Widget? child) {
+          final ThemeMode themeMode = ref.watch(themeModeNotifierProvider).value;
+          final YaruVariant yaruVariant =
+              ref.watch(themeColorNotifierProvider)?.value?.yaruVariant ?? YaruVariant.accents[0];
+
+          if (!kIsWeb && Platform.isLinux) {
+            return YaruTheme(
+              builder: (final BuildContext context, final YaruThemeData yaru, final Widget? child) {
+                return MaterialApp(
+                  darkTheme: yaru.darkTheme,
+                  home: child,
+                  locale: locale,
+                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  theme: yaru.theme,
+                  themeMode: yaru.themeMode,
+                );
+              },
+              data: YaruThemeData(
+                themeMode: themeMode,
+                variant: yaruVariant,
+              ),
+              child: const Layout(),
+            );
+          }
+
           return MaterialApp(
-            darkTheme: yaru.darkTheme,
-            home: child,
+            darkTheme: yaruVariant.darkTheme,
+            home: const Layout(),
             locale: locale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            theme: yaru.theme,
-            themeMode: yaru.themeMode,
+            theme: yaruVariant.theme,
           );
         },
-        data: YaruThemeData(
-          themeMode: themeMode,
-          variant: yaruVariant,
-        ),
-        child: const Layout(),
-      );
-    }
-
-    return MaterialApp(
-      darkTheme: yaruVariant.darkTheme,
-      home: const Layout(),
-      locale: locale,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      theme: yaruVariant.theme,
+      ),
     );
   }
 }

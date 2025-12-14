@@ -43,7 +43,7 @@ class XmlService {
     return Map.fromEntries(entries);
   }
 
-  Future<void> save() async {
+  Future<File> save() async {
     final Map<PlatformFile, Datafile> results = await filter();
 
     for (final MapEntry<PlatformFile, Datafile> result in results.entries) {
@@ -65,7 +65,7 @@ class XmlService {
         ),
       ]);
 
-      await file.writeAsString(document.toXmlString(pretty: true));
+      return file.writeAsString(document.toXmlString(pretty: true));
     }
   }
 

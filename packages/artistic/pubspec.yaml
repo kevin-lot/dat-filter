@@ -5,7 +5,7 @@ resolution: workspace
 version: 1.0.0+1
 
 environment:
-    sdk: '>=3.6.0 <5.0.0'
+    sdk: ">=3.6.0 <5.0.0"
 
 dependencies:
     collection: any
@@ -15,5 +15,5 @@ dependencies:
     freezed_annotation: any
     logging: any
     meta: any
-    safe_change_notifier: any
-dev_dependencies:
+    riverpod: ^3.0.3
+# dev_dependencies:

@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:riverpod/riverpod.dart';
 
-abstract interface class OutputPathNotifierInterface extends ChangeNotifier {
+abstract interface class OutputPathNotifierInterface extends Notifier<String?> {
   String? get value;
 
   void clear();

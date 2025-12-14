@@ -1,7 +1,7 @@
 import 'package:domain/domain.dart';
-import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:riverpod/riverpod.dart';
 
-abstract interface class RegionsNotifierInterface extends ChangeNotifier {
+abstract interface class RegionsNotifierInterface extends Notifier<List<Region>> {
   List<Region> get value;
 
   List<Region> get selected;

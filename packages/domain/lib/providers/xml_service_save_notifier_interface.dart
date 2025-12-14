@@ -1,9 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
-import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:riverpod/riverpod.dart';
 
-abstract interface class XmlServiceSaveNotifierInterface extends ChangeNotifier {
-  bool get isSaving;
-
+abstract interface class XmlServiceSaveNotifierInterface extends AsyncNotifier<File?> {
   Future<void> save();
 }

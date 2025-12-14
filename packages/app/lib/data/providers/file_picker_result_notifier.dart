@@ -1,16 +1,20 @@
 import 'package:domain/domain.dart' show FilePickerResultNotifierInterface;
 import 'package:file_picker/file_picker.dart';
-import 'package:safe_change_notifier/safe_change_notifier.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FilePickerResultNotifier extends SafeChangeNotifier implements FilePickerResultNotifierInterface {
+class FilePickerResultNotifier extends Notifier<FilePickerResult?> implements FilePickerResultNotifierInterface {
   @override
-  FilePickerResult? value;
+  FilePickerResult? get value => state;
+
+  @override
+  FilePickerResult? build() {
+    state = null;
+    return null;
+  }
 
   @override
   void set(final FilePickerResult newValue) {
-    if (newValue == value) return;
-    value = newValue;
-    notifyListeners();
+    state = newValue;
   }
 
   @override
@@ -19,10 +23,9 @@ class FilePickerResultNotifier extends SafeChangeNotifier implements FilePickerR
 
     try {
       final List<PlatformFile> newList = [...value!.files]..removeAt(index); // prevent reference
-      value = FilePickerResult(newList);
-      notifyListeners();
+      state = FilePickerResult(newList);
     } on RangeError {
-      notifyListeners();
+      state = null;
     } on Error {
       rethrow;
     }

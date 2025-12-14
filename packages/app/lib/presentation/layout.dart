@@ -13,10 +13,9 @@ import 'package:domain/domain.dart'
         OutputPathNotifierInterface;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:watch_it/watch_it.dart';
 import 'package:yaru/widgets.dart';
 
-class Layout extends WatchingStatefulWidget {
+class Layout extends StatefulWidget {
   const Layout({super.key});
 
   @override
