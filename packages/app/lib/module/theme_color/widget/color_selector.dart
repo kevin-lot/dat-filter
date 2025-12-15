@@ -1,19 +1,18 @@
 import 'package:app/module/theme_color/widget/color_panel.dart';
-import 'package:domain/domain.dart' show ThemeColorNotifierInterface;
+import 'package:app/service_locator.dart';
 import 'package:flutter/material.dart';
-import 'package:watch_it/watch_it.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaru/theme.dart';
 import 'package:yaru/yaru.dart';
 
-class ColorSelector extends WatchingWidget {
+class ColorSelector extends ConsumerWidget {
   const ColorSelector({
     super.key,
   });
 
   @override
-  Widget build(final BuildContext context) {
-    final Color color =
-        watchPropertyValue((final ThemeColorNotifierInterface n) => n.value) ?? YaruVariant.accents[0].color;
+  Widget build(final BuildContext context, final WidgetRef ref) {
+    final Color color = ref.watch(themeColorNotifierProvider).value?.value ?? YaruVariant.accents[0].color;
     final OutlinedBorder shape = OutlinedButtonTheme.of(context).style?.shape?.resolve({}) ??
         RoundedRectangleBorder(side: BorderSide(color: Theme.of(context).colorScheme.outline));
 
@@ -31,7 +30,8 @@ class ColorSelector extends WatchingWidget {
                 builder: (final BuildContext context) {
                   return ColorPanel(
                     availableYaruVariants: YaruVariant.accents,
-                    onChanged: (final YaruVariant variant) => di<ThemeColorNotifierInterface>().setColor(variant.color),
+                    onChanged: (final YaruVariant variant) =>
+                        ref.read(themeColorNotifierProvider).value?.setColor(variant.color),
                   );
                 },
                 context: context,

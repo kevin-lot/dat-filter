@@ -1,15 +1,19 @@
-import 'package:domain/domain.dart' show LocaleNotifierInterface;
+import 'package:app/service_locator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:string/string.dart';
-import 'package:watch_it/watch_it.dart';
 import 'package:yaru/widgets.dart';
 
-class LanguageSelector extends WatchingWidget {
+class LanguageSelector extends ConsumerWidget {
   const LanguageSelector({super.key});
 
   @override
-  Widget build(final BuildContext context) {
-    final Locale locale = watchPropertyValue((final LocaleNotifierInterface n) => n.value);
+  Widget build(final BuildContext context, final WidgetRef ref) {
+    final Locale? locale = ref.watch(localeNotifierProvider).value?.value;
+    if (locale == null) {
+      return const SizedBox();
+    }
+
     final List<(String, Locale)> values =
         AppLocalizations.supportedLocales.map((final Locale el) => (el.languageCode, el)).toList();
 
@@ -20,7 +24,7 @@ class LanguageSelector extends WatchingWidget {
           for (final value in values) PopupMenuItem(value: value.$2, child: Text(value.$1)),
         ];
       },
-      onSelected: (final Locale newValue) => di<LocaleNotifierInterface>().choose(newValue),
+      onSelected: (final Locale newValue) => ref.read(localeNotifierProvider).value?.choose(newValue),
       child: Text(locale.languageCode, textAlign: TextAlign.right),
     );
   }

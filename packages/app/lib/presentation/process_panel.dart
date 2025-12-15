@@ -1,3 +1,4 @@
+import 'package:app/service_locator.dart';
 import 'package:artistic/artistic.dart';
 import 'package:domain/domain.dart'
     show
@@ -10,15 +11,18 @@ import 'package:domain/domain.dart'
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:watch_it/watch_it.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProcessPanel extends WatchingWidget {
+class ProcessPanel extends ConsumerWidget {
   const ProcessPanel({super.key});
 
   @override
-  Widget build(final BuildContext context) {
-    final AppLocalizationsInterface appLocalizations =
-        watchPropertyValue((final AppLocalizationsNotifierInterface m) => m.value);
+  Widget build(final BuildContext context, final WidgetRef ref) {
+    final AppLocalizationsInterface? appLocalizations = ref.watch(appLocalizationsNotifierProvider).value?.value;
+
+    if (appLocalizations == null) {
+      return const SizedBox();
+    }
 
     return Dialog(
       child: Padding(
@@ -55,7 +59,7 @@ class ProcessPanel extends WatchingWidget {
   }
 }
 
-class _ListView extends WatchingWidget {
+class _ListView extends StatelessWidget {
   const _ListView();
 
   @override
@@ -100,7 +104,7 @@ class _ListView extends WatchingWidget {
   }
 }
 
-class _Buttons extends WatchingWidget {
+class _Buttons extends StatelessWidget {
   const _Buttons();
 
   @override

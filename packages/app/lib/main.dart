@@ -72,23 +72,24 @@ class Main extends StatelessWidget {
         builder: (final context, final ref, final _) {
           /// Don't use context and prefer the appLocalizationProvider to get translations.
           /// This "watchPropertyValue" configures MaterialApp localization properties.
-          final Locale locale = ref.watch(localeNotifierProvider)?.value ?? AppLocalizations.supportedLocales[0];
+          final Locale? locale = ref.watch(localeNotifierProvider).value?.value;
 
-          final ThemeMode themeMode = ref.watch(themeModeNotifierProvider).value;
+          final ThemeMode? themeMode = ref.watch(themeModeNotifierProvider).value?.value;
           final YaruVariant yaruVariant =
-              ref.watch(themeColorNotifierProvider)?.value?.yaruVariant ?? YaruVariant.accents[0];
+              ref.watch(themeColorNotifierProvider).value?.value?.yaruVariant ?? YaruVariant.accents[0];
+
+          if (locale == null || themeMode == null) {
+            return const CircularProgressIndicator();
+          }
 
           if (!kIsWeb && Platform.isLinux) {
             return YaruTheme(
               builder: (final BuildContext context, final YaruThemeData yaru, final Widget? child) {
-                return MaterialApp(
+                return App(
                   darkTheme: yaru.darkTheme,
                   home: child,
                   locale: locale,
-                  localizationsDelegates: AppLocalizations.localizationsDelegates,
-                  supportedLocales: AppLocalizations.supportedLocales,
                   theme: yaru.theme,
-                  themeMode: yaru.themeMode,
                 );
               },
               data: YaruThemeData(
@@ -99,16 +100,45 @@ class Main extends StatelessWidget {
             );
           }
 
-          return MaterialApp(
+          return App(
             darkTheme: yaruVariant.darkTheme,
             home: const Layout(),
             locale: locale,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
             theme: yaruVariant.theme,
           );
         },
       ),
+    );
+  }
+}
+
+class App extends StatelessWidget {
+  const App({
+    required this.home,
+    required this.darkTheme,
+    required this.locale,
+    required this.theme,
+    super.key,
+  });
+
+  // ignore: diagnostic_describe_all_properties
+  final ThemeData? darkTheme;
+  // ignore: unreachable_from_main
+  final Widget? home;
+  // ignore: diagnostic_describe_all_properties
+  final Locale? locale;
+  // ignore: diagnostic_describe_all_properties
+  final ThemeData? theme;
+
+  @override
+  Widget build(final BuildContext context) {
+    return MaterialApp(
+      darkTheme: darkTheme,
+      home: home,
+      locale: locale,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      theme: theme,
     );
   }
 }

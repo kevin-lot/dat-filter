@@ -5,10 +5,9 @@ import 'package:domain/domain.dart'
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:string/string.dart';
-import 'package:watch_it/watch_it.dart';
 import 'package:yaru/widgets.dart';
 
-class SelectMultiPicker<T extends ItemSelectorInterface<T>> extends WatchingStatefulWidget {
+class SelectMultiPicker<T extends ItemSelectorInterface<T>> extends StatefulWidget {
   const SelectMultiPicker({
     required this.items,
     required this.onAutoSort,
@@ -101,6 +100,7 @@ class _ConfigSelector<T extends ItemSelectorInterface<T>> extends State<SelectMu
         ),
         Expanded(
           child: ReorderableListView(
+            onReorder: widget.onReorder,
             children: <Widget>[
               for (int index = 0; index < widget.items.length; index++)
                 Material(
@@ -122,7 +122,6 @@ class _ConfigSelector<T extends ItemSelectorInterface<T>> extends State<SelectMu
                   ),
                 ),
             ],
-            onReorder: widget.onReorder,
           ),
         ),
       ],

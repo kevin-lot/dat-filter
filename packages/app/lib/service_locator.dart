@@ -22,74 +22,79 @@ final filePickerResultNotifierProvider =
 
 final outputPathNotifierProvider = Provider<OutputPathNotifierInterface>((final ref) => OutputPathNotifier());
 
-final themeColorNotifierProvider = Provider<ThemeColorNotifierInterface?>(
-  (final ref) =>
-      ref.watch(preferencesNotifierProvider).whenOrNull(data: (final data) => ThemeColorNotifier(data.value)),
-  dependencies: [
-    preferencesNotifierProvider,
-  ],
-);
-
-final localeNotifierProvider = Provider<LocaleNotifierInterface?>(
-  (final ref) => ref.watch(preferencesNotifierProvider).whenOrNull(data: (final data) => LocaleNotifier(data.value)),
-  dependencies: [
-    preferencesNotifierProvider,
-  ],
-);
-
-final themeModeNotifierProvider = Provider<ThemeModeNotifierInterface>(
-  (final ref) => ref.watch(preferencesNotifierProvider).when(
-        data: (final data) => ThemeModeNotifier(data.value),
-        error: (final Object error, final StackTrace stackTrace) => ThemeModeNotifier(const Preferences()),
-        loading: () => ThemeModeNotifier(const Preferences()),
-      ),
-  dependencies: [
-    preferencesNotifierProvider,
-  ],
-);
-
-final regionsFirstMatchNotifierProvider = Provider<RegionsFirstMatchNotifierInterface?>(
-  (final ref) =>
-      ref.watch(preferencesNotifierProvider).whenOrNull(data: (final data) => RegionsFirstMatchNotifier(data.value)),
-  dependencies: [
-    preferencesNotifierProvider,
-  ],
-);
-
-final regionsNotifierProvider = Provider<RegionsNotifierInterface?>(
-  (final ref) => ref.watch(preferencesNotifierProvider).whenOrNull(data: (final data) => RegionsNotifier(data.value)),
-  dependencies: [
-    preferencesNotifierProvider,
-  ],
-);
-
-final appLocalizationsNotifierProvider = Provider<AppLocalizationsNotifier?>(
+final themeColorNotifierProvider = Provider<AsyncValue<ThemeColorNotifierInterface>>(
   (final ref) {
-    final LocaleNotifierInterface? localeNotifier = ref.watch(localeNotifierProvider);
+    return ref.watch(preferencesNotifierProvider).whenData((final data) => ThemeColorNotifier(data.value));
+  },
+  dependencies: [
+    preferencesNotifierProvider,
+  ],
+);
 
-    if (localeNotifier == null) return null;
+final localeNotifierProvider = Provider<AsyncValue<LocaleNotifierInterface>>(
+  (final ref) {
+    return ref.watch(preferencesNotifierProvider).whenData((final data) => LocaleNotifier(data.value));
+  },
+  dependencies: [
+    preferencesNotifierProvider,
+  ],
+);
 
-    return AppLocalizationsNotifier(localeNotifier.value);
+final themeModeNotifierProvider = Provider<AsyncValue<ThemeModeNotifierInterface>>(
+  (final ref) {
+    return ref.watch(preferencesNotifierProvider).whenData((final data) => ThemeModeNotifier(data.value));
+  },
+  dependencies: [
+    preferencesNotifierProvider,
+  ],
+);
+
+final regionsFirstMatchNotifierProvider = Provider<AsyncValue<RegionsFirstMatchNotifierInterface>>(
+  (final ref) {
+    return ref.watch(preferencesNotifierProvider).whenData((final data) => RegionsFirstMatchNotifier(data.value));
+  },
+  dependencies: [
+    preferencesNotifierProvider,
+  ],
+);
+
+final regionsNotifierProvider = Provider<AsyncValue<RegionsNotifierInterface>>(
+  (final ref) {
+    return ref.watch(preferencesNotifierProvider).whenData((final data) => RegionsNotifier(data.value));
+  },
+  dependencies: [
+    preferencesNotifierProvider,
+  ],
+);
+
+final appLocalizationsNotifierProvider = Provider<AsyncValue<AppLocalizationsNotifierInterface>>(
+  (final ref) {
+    return ref
+        .watch(localeNotifierProvider)
+        .whenData((final localeNotifier) => AppLocalizationsNotifier(localeNotifier.value));
   },
   dependencies: [
     localeNotifierProvider,
   ],
 );
 
-final xmlServiceFilterNotifierProvider = Provider<XmlServiceFilterNotifierInterface?>(
+final xmlServiceFilterNotifierProvider = Provider<AsyncValue<XmlServiceFilterNotifierInterface>>(
   (final ref) {
     final FilePickerResultNotifierInterface filePickerResultNotifier = ref.watch(filePickerResultNotifierProvider);
     final OutputPathNotifierInterface outputPathNotifier = ref.watch(outputPathNotifierProvider);
-    final RegionsFirstMatchNotifierInterface? regionsFirstMatchNotifier = ref.watch(regionsFirstMatchNotifierProvider);
-    final RegionsNotifierInterface? regionsNotifier = ref.watch(regionsNotifierProvider);
+    final RegionsFirstMatchNotifierInterface? regionsFirstMatchNotifier =
+        ref.watch(regionsFirstMatchNotifierProvider).value;
+    final RegionsNotifierInterface? regionsNotifier = ref.watch(regionsNotifierProvider).value;
 
-    if (regionsFirstMatchNotifier == null || regionsNotifier == null) return null;
+    if (regionsFirstMatchNotifier == null || regionsNotifier == null) return const AsyncLoading();
 
-    return XmlServiceFilterNotifier(
-      filePickerResult: filePickerResultNotifier.value,
-      outputPath: outputPathNotifier.value,
-      regionFirstMatch: regionsFirstMatchNotifier.value,
-      regions: regionsNotifier.value,
+    return AsyncValue.data(
+      XmlServiceFilterNotifier(
+        filePickerResult: filePickerResultNotifier.value,
+        outputPath: outputPathNotifier.value,
+        regionFirstMatch: regionsFirstMatchNotifier.value,
+        regions: regionsNotifier.value,
+      ),
     );
   },
   dependencies: [
@@ -100,20 +105,23 @@ final xmlServiceFilterNotifierProvider = Provider<XmlServiceFilterNotifierInterf
   ],
 );
 
-final xmlServiceSaveNotifierProvider = Provider<XmlServiceSaveNotifierInterface?>(
+final xmlServiceSaveNotifierProvider = Provider<AsyncValue<XmlServiceSaveNotifierInterface>>(
   (final ref) {
     final FilePickerResultNotifierInterface filePickerResultNotifier = ref.watch(filePickerResultNotifierProvider);
     final OutputPathNotifierInterface outputPathNotifier = ref.watch(outputPathNotifierProvider);
-    final RegionsFirstMatchNotifierInterface? regionsFirstMatchNotifier = ref.watch(regionsFirstMatchNotifierProvider);
-    final RegionsNotifierInterface? regionsNotifier = ref.watch(regionsNotifierProvider);
+    final RegionsFirstMatchNotifierInterface? regionsFirstMatchNotifier =
+        ref.watch(regionsFirstMatchNotifierProvider).value;
+    final RegionsNotifierInterface? regionsNotifier = ref.watch(regionsNotifierProvider).value;
 
-    if (regionsFirstMatchNotifier == null || regionsNotifier == null) return null;
+    if (regionsFirstMatchNotifier == null || regionsNotifier == null) return const AsyncLoading();
 
-    return XmlServiceSaveNotifier(
-      filePickerResult: filePickerResultNotifier.value,
-      outputPath: outputPathNotifier.value,
-      regionFirstMatch: regionsFirstMatchNotifier.value,
-      regions: regionsNotifier.value,
+    return AsyncValue.data(
+      XmlServiceSaveNotifier(
+        filePickerResult: filePickerResultNotifier.value,
+        outputPath: outputPathNotifier.value,
+        regionFirstMatch: regionsFirstMatchNotifier.value,
+        regions: regionsNotifier.value,
+      ),
     );
   },
   dependencies: [

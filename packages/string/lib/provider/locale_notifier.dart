@@ -4,17 +4,17 @@ import 'package:domain/domain.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:string/string.dart';
 
-class LocaleNotifier extends Notifier<Locale?> implements LocaleNotifierInterface {
+class LocaleNotifier extends Notifier<Locale> implements LocaleNotifierInterface {
   LocaleNotifier(this._preferences);
 
   final Preferences _preferences;
 
   @override
-  Locale? get value => state;
+  Locale get value => state;
 
   @override
-  Locale? build() {
-    state = _preferences.locale;
+  Locale build() {
+    state = _preferences.locale ?? AppLocalizations.supportedLocales[0];
     return state;
   }
 

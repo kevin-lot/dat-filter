@@ -1,14 +1,19 @@
+import 'package:app/service_locator.dart';
 import 'package:domain/domain.dart' show ThemeModeNotifierInterface;
 import 'package:flutter/material.dart';
-import 'package:watch_it/watch_it.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaru/widgets.dart';
 
-class BrightnessSelector extends WatchingWidget {
+class BrightnessSelector extends ConsumerWidget {
   const BrightnessSelector({super.key});
 
   @override
-  Widget build(final BuildContext context) {
-    final ThemeMode themeMode = watchPropertyValue((final ThemeModeNotifierInterface m) => m.value);
+  Widget build(final BuildContext context, final WidgetRef ref) {
+    final ThemeMode? themeMode = ref.watch(themeModeNotifierProvider).value?.value;
+
+    if (themeMode == null) {
+      return const SizedBox();
+    }
 
     final List<(String, ThemeMode)> values = ThemeMode.values.map((final ThemeMode el) => (el.name, el)).toList();
 

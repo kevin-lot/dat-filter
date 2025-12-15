@@ -8,10 +8,9 @@ import 'package:domain/domain.dart'
         RegionsFirstMatchNotifierInterface,
         RegionsNotifierInterface;
 import 'package:flutter/material.dart';
-import 'package:watch_it/watch_it.dart';
 import 'package:yaru/widgets.dart';
 
-class RegionsPicker extends WatchingStatefulWidget {
+class RegionsPicker extends StatefulWidget {
   const RegionsPicker({super.key});
 
   @override

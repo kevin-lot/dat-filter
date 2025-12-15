@@ -16,11 +16,10 @@ import 'package:domain/domain.dart'
         ThemeColorNotifierInterface,
         ThemeModeNotifierInterface;
 import 'package:flutter/material.dart';
-import 'package:watch_it/watch_it.dart';
 import 'package:yaru/theme.dart';
 import 'package:yaru/widgets.dart';
 
-class Settings extends WatchingWidget {
+class Settings extends StatelessWidget {
   const Settings({super.key});
 
   @override

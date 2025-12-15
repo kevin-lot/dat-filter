@@ -8,7 +8,7 @@ import 'package:watch_it/watch_it.dart';
 import 'package:yaru/theme.dart';
 import 'package:yaru/widgets.dart';
 
-class ColorPanel extends WatchingWidget {
+class ColorPanel extends StatelessWidget {
   const ColorPanel({
     required this.availableYaruVariants,
     required this.onChanged,

@@ -4,32 +4,32 @@ import 'package:app/module/output_path/widget/output_path_selector.dart';
 import 'package:app/module/regions/widget/regions_picker.dart';
 import 'package:app/module/settings/widget/settings.dart';
 import 'package:app/presentation/process_panel.dart';
+import 'package:app/service_locator.dart';
 import 'package:artistic/artistic.dart';
-import 'package:domain/domain.dart'
-    show
-        AppLocalizationsInterface,
-        AppLocalizationsNotifierInterface,
-        FilePickerResultNotifierInterface,
-        OutputPathNotifierInterface;
+import 'package:domain/domain.dart' show AppLocalizationsInterface;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yaru/widgets.dart';
 
-class Layout extends StatefulWidget {
+class Layout extends ConsumerStatefulWidget {
   const Layout({super.key});
 
   @override
-  State<Layout> createState() => _Layout();
+  ConsumerState<Layout> createState() => _Layout();
 }
 
-class _Layout extends State<Layout> {
+class _Layout extends ConsumerState<Layout> {
   @override
   Widget build(final BuildContext context) {
-    final AppLocalizationsInterface appLocalizations =
-        watchPropertyValue((final AppLocalizationsNotifierInterface n) => n.value);
-    final FilePickerResult? filePickerResult =
-        watchPropertyValue((final FilePickerResultNotifierInterface n) => n.value);
-    final String? outputPath = watchPropertyValue((final OutputPathNotifierInterface n) => n.value);
+    final AppLocalizationsInterface? appLocalizations = ref.watch(appLocalizationsNotifierProvider).value?.value;
+
+    if (appLocalizations == null) {
+      return const SizedBox();
+    }
+
+    final String? outputPath = ref.watch(outputPathNotifierProvider).value;
+    final FilePickerResult? filePickerResult = ref.watch(filePickerResultNotifierProvider).value;
 
     return Scaffold(
       body: Padding(
